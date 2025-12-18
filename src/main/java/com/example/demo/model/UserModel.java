@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,6 +16,7 @@ public class UserModel {
     private String email;
     private String password;
     private String role;
+    private LocalDateTime createdAt;
     public Long getId() {
         return id;
     }
@@ -44,14 +47,21 @@ public class UserModel {
     public void setRole(String role) {
         this.role = role;
     }
-    public UserModel(Long id, String fullname, String email, String password, String role) {
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+    public UserModel(Long id, String fullname, String email, String password, String role, LocalDateTime createdAt) {
         this.id = id;
         this.fullname = fullname;
         this.email = email;
         this.password = password;
         this.role = role;
+        this.createdAt = createdAt;
     }
     public UserModel() {
     }
-
+    
 }
