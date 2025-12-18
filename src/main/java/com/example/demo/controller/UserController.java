@@ -17,8 +17,8 @@ import com.example.demo.service.UserService;
 public class UserController {
     @Autowired
     UserService userService;
-    @PostMapping("/add")
-    public UserModel add(@RequestBody UserModel user){
+    @PostMapping("/register")
+    public UserModel register(@RequestBody UserModel user){
         return userService.createUser(user);
     }
     @GetMapping("/all")
@@ -27,6 +27,6 @@ public class UserController {
     }
     @GetMapping("/{id}")
     public UserModel getUserById(@PathVariable Long id){
-        return userService.getUserById
+        return userService.getUserById(id);
     } 
 }

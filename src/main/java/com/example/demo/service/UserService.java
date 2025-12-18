@@ -6,5 +6,6 @@ import com.example.demo.entity.UserModel;
 
 public interface UserService {
     UserModel createUser(UserModel user);
+    
     List<UserModel> getAllUsers();
 }
