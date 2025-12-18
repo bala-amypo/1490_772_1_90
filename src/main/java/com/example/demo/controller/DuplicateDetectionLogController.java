@@ -13,21 +13,22 @@ public class DuplicateDetectionLogController {
 
     private final DuplicateDetectionLogService logService;
 
-    public DuplicateDetectionLogController(
-            DuplicateDetectionLogService logService) {
-        this.logService = logService;
-    }
+        public DuplicateDetectionLogController(
+                    DuplicateDetectionLogService logService) {
+                            this.logService = logService;
+                                }
 
-    // GET LOGS FOR A TICKET
-    @GetMapping("/ticket/{ticketId}")
-    public List<DuplicateDetectionLogModel> getLogsForTicket(
-            @PathVariable Long ticketId) {
-        return logService.getLogsForTicket(ticketId);
-    }
+                                    // GET LOGS FOR A TICKET
+                                        @GetMapping("/ticket/{ticketId}")
+                                            public List<DuplicateDetectionLogModel> getLogsForTicket(
+                                                        @PathVariable Long ticketId) {
+                                                                return logService.getLogsForTicket(ticketId);
+                                                                    }
 
-    // GET SINGLE LOG
-    @GetMapping("/{id}")
-    public DuplicateDetectionLogModel getLog(@PathVariable Long id) {
-        return logService.getLog(id);
-    }
-}
+                                                                        // GET SINGLE LOG
+                                                                            @GetMapping("/{id}")
+                                                                                public DuplicateDetectionLogModel getLog(@PathVariable Long id) {
+                                                                                        return logService.getLog(id);
+                                                                                            }
+                                                                                            }
+                                                                                            
