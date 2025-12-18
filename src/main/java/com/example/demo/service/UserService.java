@@ -5,7 +5,7 @@ import java.util.List;
 import com.example.demo.entity.UserModel;
 
 public interface UserService {
-    UserModel createUser(UserModel user);
-    
+    UserModel registerUser(UserModel user);
+    UserModel getUser(Long id);
     List<UserModel> getAllUsers();
 }
