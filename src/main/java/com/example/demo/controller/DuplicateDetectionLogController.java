@@ -13,22 +13,28 @@ public class DuplicateDetectionLogController {
 
     private final DuplicateDetectionLogService logService;
 
-        public DuplicateDetectionLogController(
-                    DuplicateDetectionLogService logService) {
-                            this.logService = logService;
-                                }
+    public DuplicateDetectionLogController(DuplicateDetectionLogService logService) {
+        this.logService = logService;
+    }
 
-                                    // GET LOGS FOR A TICKET
-                                        @GetMapping("/ticket/{ticketId}")
-                                            public List<DuplicateDetectionLogModel> getLogsForTicket(
-                                                        @PathVariable Long ticketId) {
-                                                                return logService.getLogsForTicket(ticketId);
-                                                                    }
+    // RUN DUPLICATE DETECTION
+    @GetMapping("/run/{ticketId}")
+    public List<DuplicateDetectionLogModel> runDetection(
+            @PathVariable Long ticketId) {
+        return logService.runDetection(ticketId);
+    }
 
-                                                                        // GET SINGLE LOG
-                                                                            @GetMapping("/{id}")
-                                                                                public DuplicateDetectionLogModel getLog(@PathVariable Long id) {
-                                                                                        return logService.getLog(id);
-                                                                                            }
-                                                                                            }
-                                                                                            
+    // GET LOGS FOR A TICKET
+    @GetMapping("/ticket/{ticketId}")
+    public List<DuplicateDetectionLogModel> getLogsForTicket(
+            @PathVariable Long ticketId) {
+        return logService.getLogsForTicket(ticketId);
+    }
+
+    // GET SINGLE LOG
+    @GetMapping("/{id}")
+    public DuplicateDetectionLogModel getLog(
+            @PathVariable Long id) {
+        return logService.getLog(id);
+    }
+}
