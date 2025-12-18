@@ -13,8 +13,12 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepo;
     @Override
-    public UserModel createUser(UserModel user){
+    public UserModel registerUser(UserModel user){
         return userRepo.save(user);
+    }
+    @Override
+    public UserModel getUser(Long id){
+        return userRepo.findById(id).orElse(new UserModel());
     }
     @Override
     public List<UserModel>getAllUsers(){
