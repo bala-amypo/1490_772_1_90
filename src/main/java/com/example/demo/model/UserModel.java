@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 
 @Entity
 public class UserModel {
@@ -17,6 +18,13 @@ public class UserModel {
     private String password;
     private String role;
     private LocalDateTime createdAt;
+      @PrePersist
+    public void onCreate() {
+        createdAt = LocalDateTime.now();
+        if (role == null) {
+            role = "USER";
+        }
+    }
     public Long getId() {
         return id;
     }
