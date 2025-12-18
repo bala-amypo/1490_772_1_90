@@ -18,6 +18,15 @@ public class DuplicateRuleServiceImpl implements DuplicateRuleService {
 
     @Override
     public DuplicateRuleModel createRule(DuplicateRuleModel rule) {
+
+        if (rule.getFieldName() == null || rule.getFieldName().trim().isEmpty()) {
+            throw new RuntimeException("Field name cannot be empty");
+        }
+
+        if (rule.getThreshold() < 0 || rule.getThreshold() > 1) {
+            throw new RuntimeException("Invalid threshold");
+        }
+
         return ruleRepository.save(rule);
     }
 
@@ -34,9 +43,20 @@ public class DuplicateRuleServiceImpl implements DuplicateRuleService {
 
     @Override
     public DuplicateRuleModel updateRule(Long id, DuplicateRuleModel rule) {
+
         DuplicateRuleModel existing = getRule(id);
+
+        if (rule.getFieldName() == null || rule.getFieldName().trim().isEmpty()) {
+            throw new RuntimeException("Field name cannot be empty");
+        }
+
+        if (rule.getThreshold() < 0 || rule.getThreshold() > 1) {
+            throw new RuntimeException("Invalid threshold");
+        }
+
         existing.setFieldName(rule.getFieldName());
         existing.setThreshold(rule.getThreshold());
+
         return ruleRepository.save(existing);
     }
 
