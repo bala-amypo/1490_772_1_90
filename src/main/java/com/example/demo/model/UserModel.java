@@ -95,4 +95,7 @@ public class UserModel {
     public UserModel(Long id) {
         this.id = id;
     }
+
+    public UserModel() {
+    }
 }
