@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -15,6 +17,12 @@ public class DuplicateRuleModel {
 
     @Column(nullable = false)
     private double threshold;
+
+    // ✅ RELATIONSHIP CODE (ADD THIS)
+    @OneToMany(mappedBy = "rule")
+    private List<DuplicateDetectionLogModel> detectionLogs;
+
+    // getters & setters
 
     public Long getId() {
         return id;
@@ -40,6 +48,15 @@ public class DuplicateRuleModel {
         this.threshold = threshold;
     }
 
+    public List<DuplicateDetectionLogModel> getDetectionLogs() {
+        return detectionLogs;
+    }
+
+    public void setDetectionLogs(List<DuplicateDetectionLogModel> detectionLogs) {
+        this.detectionLogs = detectionLogs;
+    }
+
+    // constructors
     public DuplicateRuleModel(Long id, String fieldName, double threshold) {
         this.id = id;
         this.fieldName = fieldName;
@@ -48,5 +65,4 @@ public class DuplicateRuleModel {
 
     public DuplicateRuleModel() {
     }
-
 }

@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import jakarta.persistence.*;
 
@@ -29,6 +30,10 @@ public class TicketModel {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
+    // ✅ RELATIONSHIP CODE (ADD THIS)
+    @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL)
+    private List<DuplicateDetectionLogModel> detectionLogs;
+
     @PrePersist
     public void onCreate() {
         createdAt = LocalDateTime.now();
@@ -36,6 +41,8 @@ public class TicketModel {
             status = "OPEN";
         }
     }
+
+    // getters & setters
 
     public Long getId() {
         return id;
@@ -93,8 +100,16 @@ public class TicketModel {
         this.createdAt = createdAt;
     }
 
-    public TicketModel(Long id, UserModel user, TicketCategoryModel category, String subject, String description,
-            String status, LocalDateTime createdAt) {
+    public List<DuplicateDetectionLogModel> getDetectionLogs() {
+        return detectionLogs;
+    }
+
+    public void setDetectionLogs(List<DuplicateDetectionLogModel> detectionLogs) {
+        this.detectionLogs = detectionLogs;
+    }
+
+    public TicketModel(Long id, UserModel user, TicketCategoryModel category, String subject,
+                       String description, String status, LocalDateTime createdAt) {
         this.id = id;
         this.user = user;
         this.category = category;
@@ -106,5 +121,4 @@ public class TicketModel {
 
     public TicketModel() {
     }
-    
 }
