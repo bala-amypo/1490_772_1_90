@@ -43,9 +43,4 @@ public class DuplicateRuleController {
         return ruleService.updateRule(id, rule);
     }
 
-    // DELETE RULE
-    @DeleteMapping("/{id}")
-    public void deleteRule(@PathVariable Long id) {
-        ruleService.deleteRule(id);
-    }
 }
