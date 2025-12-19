@@ -14,6 +14,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<String> handleNotFound(ResourceNotFoundException ex){
+        // Logging (Optional)
+        // logger.error("Resource not found: " + ex.getMessage()); 
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
@@ -21,7 +23,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleValidationError(MethodArgumentNotValidException ex){
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getFieldErrors().forEach(error -> 
-            errors.put(error.getField(), error.getDefaultMessage())
+            errors.put(error.getField(), error.getDefaultMessage() + " (Rejected value: " + error.getRejectedValue() + ")")
         );
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
