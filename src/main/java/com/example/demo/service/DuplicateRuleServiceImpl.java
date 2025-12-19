@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.DuplicateRuleModel;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.DuplicateRuleRepository;
 
 @Service
@@ -19,14 +20,7 @@ public class DuplicateRuleServiceImpl implements DuplicateRuleService {
     @Override
     public DuplicateRuleModel createRule(DuplicateRuleModel rule) {
 
-        if (rule.getFieldName() == null || rule.getFieldName().trim().isEmpty()) {
-            throw new RuntimeException("Field name cannot be empty");
-        }
-
-        if (rule.getThreshold() < 0 || rule.getThreshold() > 1) {
-            throw new RuntimeException("Invalid threshold");
-        }
-
+        validateRule(rule);
         return ruleRepository.save(rule);
     }
 
@@ -38,7 +32,9 @@ public class DuplicateRuleServiceImpl implements DuplicateRuleService {
     @Override
     public DuplicateRuleModel getRule(Long id) {
         return ruleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Rule not found"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "DuplicateRule not found with id: " + id));
     }
 
     @Override
@@ -46,13 +42,7 @@ public class DuplicateRuleServiceImpl implements DuplicateRuleService {
 
         DuplicateRuleModel existing = getRule(id);
 
-        if (rule.getFieldName() == null || rule.getFieldName().trim().isEmpty()) {
-            throw new RuntimeException("Field name cannot be empty");
-        }
-
-        if (rule.getThreshold() < 0 || rule.getThreshold() > 1) {
-            throw new RuntimeException("Invalid threshold");
-        }
+        validateRule(rule);
 
         existing.setFieldName(rule.getFieldName());
         existing.setThreshold(rule.getThreshold());
@@ -64,5 +54,21 @@ public class DuplicateRuleServiceImpl implements DuplicateRuleService {
     public void deleteRule(Long id) {
         DuplicateRuleModel rule = getRule(id);
         ruleRepository.delete(rule);
+    }
+
+    // 🔹 COMMON VALIDATION METHOD
+    private void validateRule(DuplicateRuleModel rule) {
+
+        if (rule == null) {
+            throw new IllegalArgumentException("Rule data cannot be null");
+        }
+
+        if (rule.getFieldName() == null || rule.getFieldName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Field name cannot be empty");
+        }
+
+        if (rule.getThreshold() < 0 || rule.getThreshold() > 1) {
+            throw new IllegalArgumentException("Threshold must be between 0 and 1");
+        }
     }
 }
