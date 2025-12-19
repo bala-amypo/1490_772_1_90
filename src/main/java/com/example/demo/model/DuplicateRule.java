@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "duplicate_rule")
-public class DuplicateRuleModel {
+public class DuplicateRule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,13 +40,13 @@ public class DuplicateRuleModel {
         this.threshold = threshold;
     }
 
-    public DuplicateRuleModel(Long id, String fieldName, double threshold) {
+    public DuplicateRule(Long id, String fieldName, double threshold) {
         this.id = id;
         this.fieldName = fieldName;
         this.threshold = threshold;
     }
 
-    public DuplicateRuleModel() {
+    public DuplicateRule() {
     }
 
 }
