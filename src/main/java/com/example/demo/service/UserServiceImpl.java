@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.UserModel;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.UserRepository;
 
 @Service
@@ -18,16 +19,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserModel registerUser(UserModel user) {
-        if (userRepo.existsByEmail(user.getEmail())) {
-            throw new RuntimeException("Duplicate email");
+
+        if (user == null) {
+            throw new IllegalArgumentException("User data cannot be null");
         }
+
+        if (user.getEmail() == null || user.getEmail().trim().isEmpty()) {
+            throw new IllegalArgumentException("Email cannot be empty");
+        }
+
+        if (userRepo.existsByEmail(user.getEmail())) {
+            throw new IllegalArgumentException("Duplicate email");
+        }
+
         return userRepo.save(user);
     }
 
     @Override
     public UserModel getUser(Long id) {
         return userRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "User not found with id: " + id));
     }
 
     @Override
@@ -35,6 +48,3 @@ public class UserServiceImpl implements UserService {
         return userRepo.findAll();
     }
 }
-
-
-
