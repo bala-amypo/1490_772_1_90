@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 
 @Entity
-public class UserModel {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -83,7 +83,7 @@ public class UserModel {
         this.createdAt = createdAt;
     }
 
-    public UserModel(Long id, String fullName, String email, String password, String role, LocalDateTime createdAt) {
+    public User(Long id, String fullName, String email, String password, String role, LocalDateTime createdAt) {
         this.id = id;
         this.fullName = fullName;
         this.email = email;
@@ -92,10 +92,10 @@ public class UserModel {
         this.createdAt = createdAt;
     }
 
-    public UserModel(Long id) {
+    public User(Long id) {
         this.id = id;
     }
 
-    public UserModel() {
+    public User() {
     }
 }
