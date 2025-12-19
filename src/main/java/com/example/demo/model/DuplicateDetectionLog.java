@@ -4,17 +4,17 @@ import java.time.LocalDateTime;
 import jakarta.persistence.*;
 
 @Entity
-public class DuplicateDetectionLogModel {
+public class DuplicateDetectionLog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(optional = false)
-    private TicketModel ticket;
+    private Ticket ticket;
 
     @ManyToOne(optional = false)
-    private TicketModel matchedTicket;
+    private Ticket matchedTicket;
 
     @Column(nullable = false)
     private Double matchScore;
@@ -34,19 +34,19 @@ public class DuplicateDetectionLogModel {
         this.id = id;
     }
 
-    public TicketModel getTicket() {
+    public Ticket getTicket() {
         return ticket;
     }
 
-    public void setTicket(TicketModel ticket) {
+    public void setTicket(Ticket ticket) {
         this.ticket = ticket;
     }
 
-    public TicketModel getMatchedTicket() {
+    public Ticket getMatchedTicket() {
         return matchedTicket;
     }
 
-    public void setMatchedTicket(TicketModel matchedTicket) {
+    public void setMatchedTicket(Ticket matchedTicket) {
         this.matchedTicket = matchedTicket;
     }
 
@@ -66,7 +66,7 @@ public class DuplicateDetectionLogModel {
         this.detectedAt = detectedAt;
     }
 
-    public DuplicateDetectionLogModel(Long id, TicketModel ticket, TicketModel matchedTicket, Double matchScore,
+    public DuplicateDetectionLog(Long id, Ticket ticket, Ticket matchedTicket, Double matchScore,
             LocalDateTime detectedAt) {
         this.id = id;
         this.ticket = ticket;
@@ -75,7 +75,7 @@ public class DuplicateDetectionLogModel {
         this.detectedAt = detectedAt;
     }
 
-    public DuplicateDetectionLogModel() {
+    public DuplicateDetectionLog() {
     }
     
 }
