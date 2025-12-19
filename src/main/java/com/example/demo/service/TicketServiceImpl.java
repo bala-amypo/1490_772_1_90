@@ -4,65 +4,45 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.example.demo.entity.TicketCategoryModel;
-import com.example.demo.entity.TicketModel;
-import com.example.demo.entity.UserModel;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.TicketCategoryModel;
 import com.example.demo.repository.TicketCategoryRepository;
-import com.example.demo.repository.TicketRepository;
-import com.example.demo.repository.UserRepository;
 
 @Service
-public class TicketServiceImpl implements TicketService {
+public class TicketCategoryServiceImpl implements TicketCategoryService {
 
-    private final TicketRepository ticketRepository;
-    private final UserRepository userRepository;
-    private final TicketCategoryRepository categoryRepository;
+    private final TicketCategoryRepository categoryRepo;
 
-    public TicketServiceImpl(
-            TicketRepository ticketRepository,
-            UserRepository userRepository,
-            TicketCategoryRepository categoryRepository) {
-        this.ticketRepository = ticketRepository;
-        this.userRepository = userRepository;
-        this.categoryRepository = categoryRepository;
+    public TicketCategoryServiceImpl(TicketCategoryRepository categoryRepo) {
+        this.categoryRepo = categoryRepo;
     }
 
     @Override
-    public TicketModel createTicket(Long userId, Long categoryId, TicketModel ticket) {
+    public TicketCategoryModel createCategory(TicketCategoryModel category) {
 
-        if (ticket.getSubject() == null || ticket.getSubject().trim().isEmpty()) {
-            throw new RuntimeException("Subject cannot be empty");
+        if (category.getCategoryName() == null || category.getCategoryName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Category name cannot be empty");
         }
 
-        if (ticket.getDescription() == null || ticket.getDescription().length() < 10) {
-            throw new RuntimeException("Description is too short");
+        if (category.getDescription() == null || category.getDescription().trim().isEmpty()) {
+            throw new IllegalArgumentException("Description cannot be empty");
         }
 
-        UserModel user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        if (categoryRepo.existsByCategoryName(category.getCategoryName())) {
+            throw new IllegalArgumentException("Category already exists");
+        }
 
-        TicketCategoryModel category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
-
-        ticket.setUser(user);
-        ticket.setCategory(category);
-
-        return ticketRepository.save(ticket);
+        return categoryRepo.save(category);
     }
 
     @Override
-    public TicketModel getTicket(Long ticketId) {
-        return ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new RuntimeException("Ticket not found"));
+    public List<TicketCategoryModel> getAllCategories() {
+        return categoryRepo.findAll();
     }
 
     @Override
-    public List<TicketModel> getTicketsByUser(Long userId) {
-        return ticketRepository.findByUser_Id(userId);
-    }
-
-    @Override
-    public List<TicketModel> getAllTickets() {
-        return ticketRepository.findAll();
+    public TicketCategoryModel getCategoryById(Long id) {
+        return categoryRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
     }
 }
