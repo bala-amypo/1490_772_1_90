@@ -5,17 +5,17 @@ import java.time.LocalDateTime;
 import jakarta.persistence.*;
 
 @Entity
-public class TicketModel {
+public class Ticket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(optional = false)
-    private UserModel user;
+    private User user;
 
     @ManyToOne(optional = false)
-    private TicketCategoryModel category;
+    private TicketCategory category;
 
     @Column(nullable = false)
     private String subject;
@@ -45,19 +45,19 @@ public class TicketModel {
         this.id = id;
     }
 
-    public UserModel getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(UserModel user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
-    public TicketCategoryModel getCategory() {
+    public TicketCategory getCategory() {
         return category;
     }
 
-    public void setCategory(TicketCategoryModel category) {
+    public void setCategory(TicketCategory category) {
         this.category = category;
     }
 
@@ -93,7 +93,7 @@ public class TicketModel {
         this.createdAt = createdAt;
     }
 
-    public TicketModel(Long id, UserModel user, TicketCategoryModel category, String subject, String description,
+    public Ticket(Long id, User user, TicketCategory category, String subject, String description,
             String status, LocalDateTime createdAt) {
         this.id = id;
         this.user = user;
@@ -104,7 +104,7 @@ public class TicketModel {
         this.createdAt = createdAt;
     }
 
-    public TicketModel() {
+    public Ticket() {
     }
     
 }
