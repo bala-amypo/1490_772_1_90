@@ -55,8 +55,6 @@ public class DuplicateRuleServiceImpl implements DuplicateRuleService {
         DuplicateRuleModel rule = getRule(id);
         ruleRepository.delete(rule);
     }
-
-    // 🔹 COMMON VALIDATION METHOD
     private void validateRule(DuplicateRuleModel rule) {
 
         if (rule == null) {
