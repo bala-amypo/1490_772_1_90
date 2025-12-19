@@ -1,4 +1,4 @@
-package com.example.demo.entity;
+package com.example.demo.model;
 
 import java.time.LocalDateTime;
 
@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 
 @Entity
-public class User {
+public class UserModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -83,7 +83,7 @@ public class User {
         this.createdAt = createdAt;
     }
 
-    public User(Long id, String fullName, String email, String password, String role, LocalDateTime createdAt) {
+    public UserModel(Long id, String fullName, String email, String password, String role, LocalDateTime createdAt) {
         this.id = id;
         this.fullName = fullName;
         this.email = email;
@@ -92,10 +92,10 @@ public class User {
         this.createdAt = createdAt;
     }
 
-    public User(Long id) {
+    public UserModel(Long id) {
         this.id = id;
     }
 
-    public User() {
+    public UserModel() {
     }
 }
