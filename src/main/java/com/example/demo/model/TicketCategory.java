@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import jakarta.persistence.*;
 
 @Entity
-public class TicketCategory {
+public class TicketCategoryModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,14 +57,14 @@ public class TicketCategory {
         this.createdAt = createdAt;
     }
 
-    public TicketCategory(Long id, String categoryName, String description, LocalDateTime createdAt) {
+    public TicketCategoryModel(Long id, String categoryName, String description, LocalDateTime createdAt) {
         this.id = id;
         this.categoryName = categoryName;
         this.description = description;
         this.createdAt = createdAt;
     }
 
-    public TicketCategory() {
+    public TicketCategoryModel() {
     }
 
 }
