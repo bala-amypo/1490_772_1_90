@@ -19,19 +19,16 @@ public class UserController {
         this.service = service;
     }
 
-    // Create / Register User
     @PostMapping
     public User register(@Valid @RequestBody User user) {
         return service.registerUser(user);
     }
 
-    // Get User by ID
     @GetMapping("/{id}")
     public User get(@PathVariable Long id) {
         return service.getUser(id);
     }
 
-    // Get All Users
     @GetMapping
     public List<User> getAll() {
         return service.getAllUsers();
