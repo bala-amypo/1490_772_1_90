@@ -1,69 +1,58 @@
 package com.example.demo.service;
 
 import java.util.List;
-
 import org.springframework.stereotype.Service;
-
-import com.example.demo.entity.TicketCategoryModel;
-import com.example.demo.entity.TicketModel;
-import com.example.demo.entity.UserModel;
 import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.repository.TicketCategoryRepository;
+import com.example.demo.model.Ticket;
+import com.example.demo.model.User;
+import com.example.demo.model.TicketCategory;
 import com.example.demo.repository.TicketRepository;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.repository.TicketCategoryRepository;
 
 @Service
 public class TicketServiceImpl implements TicketService {
 
-    private final TicketRepository ticketRepository;
-    private final UserRepository userRepository;
-    private final TicketCategoryRepository categoryRepository;
+    private final TicketRepository ticketRepo;
+    private final UserRepository userRepo;
+    private final TicketCategoryRepository catRepo;
 
-    public TicketServiceImpl(
-            TicketRepository ticketRepository,
-            UserRepository userRepository,
-            TicketCategoryRepository categoryRepository) {
-        this.ticketRepository = ticketRepository;
-        this.userRepository = userRepository;
-        this.categoryRepository = categoryRepository;
+    public TicketServiceImpl(TicketRepository ticketRepo, UserRepository userRepo, TicketCategoryRepository catRepo) {
+        this.ticketRepo = ticketRepo;
+        this.userRepo = userRepo;
+        this.catRepo = catRepo;
     }
 
     @Override
-    public TicketModel createTicket(Long userId, Long categoryId, TicketModel ticket) {
+    public Ticket createTicket(Long userId, Long categoryId, Ticket ticket) {
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("user not found"));
+        TicketCategory category = catRepo.findById(categoryId)
+                .orElseThrow(() -> new ResourceNotFoundException("category not found"));
 
-        if (ticket.getSubject() == null || ticket.getSubject().trim().isEmpty()) {
-            throw new IllegalArgumentException("Subject cannot be empty");
-        }
-
-        if (ticket.getDescription() == null || ticket.getDescription().length() < 10) {
-            throw new IllegalArgumentException("Description must be at least 10 characters");
-        }
-
-        UserModel user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
-
-        TicketCategoryModel category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + categoryId));
+        if (ticket.getDescription().length() < 10)
+            throw new IllegalArgumentException("description too short");
 
         ticket.setUser(user);
         ticket.setCategory(category);
-
-        return ticketRepository.save(ticket);
+        return ticketRepo.save(ticket);
     }
 
     @Override
-    public TicketModel getTicket(Long ticketId) {
-        return ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new ResourceNotFoundException("Ticket not found with id: " + ticketId));
+    public Ticket getTicket(Long ticketId) {
+        return ticketRepo.findById(ticketId)
+                .orElseThrow(() -> new ResourceNotFoundException("ticket not found"));
     }
 
     @Override
-    public List<TicketModel> getTicketsByUser(Long userId) {
-        return ticketRepository.findByUser_Id(userId);
+    public List<Ticket> getTicketsByUser(Long userId) {
+        if (!userRepo.existsById(userId))
+            throw new ResourceNotFoundException("user not found");
+        return ticketRepo.findByUser_Id(userId);
     }
 
     @Override
-    public List<TicketModel> getAllTickets() {
-        return ticketRepository.findAll();
+    public List<Ticket> getAllTickets() {
+        return ticketRepo.findAll();
     }
 }
