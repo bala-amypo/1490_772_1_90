@@ -41,4 +41,14 @@ public class DuplicateRule {
     public Double getThreshold() { return threshold; }
     public void setThreshold(Double threshold) { this.threshold = threshold; }
     public LocalDateTime getCreatedAt() { return createdAt; }
+
+    public DuplicateRule(Long id, @NotBlank String ruleName, @NotBlank String matchType,
+            @DecimalMin("0.0") @DecimalMax("1.0") Double threshold, LocalDateTime createdAt) {
+        this.id = id;
+        this.ruleName = ruleName;
+        this.matchType = matchType;
+        this.threshold = threshold;
+        this.createdAt = createdAt;
+    }
+    
 }
