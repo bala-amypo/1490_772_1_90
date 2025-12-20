@@ -15,14 +15,14 @@ import com.example.demo.repository.DuplicateRuleRepository;
 import com.example.demo.repository.TicketRepository;
 
 @Service
-public class DuplicateDetectionServiceImpl implements DuplicateDetectionService {
+public class DuplicateDetectionLogServiceImpl implements DuplicateDetectionLogService {
 
     private final TicketRepository ticketRepo;
     private final DuplicateRuleRepository ruleRepo;
     private final DuplicateDetectionLogRepository logRepo;
 
     // Constructor injection
-    public DuplicateDetectionServiceImpl(TicketRepository ticketRepo,
+    public DuplicateDetectionLogServiceImpl(TicketRepository ticketRepo,
                                          DuplicateRuleRepository ruleRepo,
                                          DuplicateDetectionLogRepository logRepo) {
         this.ticketRepo = ticketRepo;
