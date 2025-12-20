@@ -35,4 +35,12 @@ public class TicketCategory {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
     public LocalDateTime getCreatedAt() { return createdAt; }
+
+    public TicketCategory(Long id, @NotBlank String categoryName, String description, LocalDateTime createdAt) {
+        this.id = id;
+        this.categoryName = categoryName;
+        this.description = description;
+        this.createdAt = createdAt;
+    }
+    
 }
