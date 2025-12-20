@@ -20,9 +20,10 @@ public class DuplicateDetectionLogServiceImpl implements DuplicateDetectionLogSe
     private final DuplicateRuleRepository ruleRepo;
     private final DuplicateDetectionLogRepository logRepo;
 
-    public DuplicateDetectionServiceImpl(TicketRepository ticketRepo,
-                                         DuplicateRuleRepository ruleRepo,
-                                         DuplicateDetectionLogRepository logRepo) {
+    // ✅ Constructor name must match class name
+    public DuplicateDetectionLogServiceImpl(TicketRepository ticketRepo,
+                                            DuplicateRuleRepository ruleRepo,
+                                            DuplicateDetectionLogRepository logRepo) {
         this.ticketRepo = ticketRepo;
         this.ruleRepo = ruleRepo;
         this.logRepo = logRepo;
