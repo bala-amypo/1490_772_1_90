@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import org.springframework.stereotype.Service;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.DuplicateDetectionLog;
@@ -14,16 +15,16 @@ import com.example.demo.repository.DuplicateRuleRepository;
 import com.example.demo.repository.TicketRepository;
 
 @Service
-public class DuplicateDetectionLogServiceImpl implements DuplicateDetectionLogService {
+public class DuplicateDetectionServiceImpl implements DuplicateDetectionService {
 
     private final TicketRepository ticketRepo;
     private final DuplicateRuleRepository ruleRepo;
     private final DuplicateDetectionLogRepository logRepo;
 
-    // ✅ Constructor name must match class name
-    public DuplicateDetectionLogServiceImpl(TicketRepository ticketRepo,
-                                            DuplicateRuleRepository ruleRepo,
-                                            DuplicateDetectionLogRepository logRepo) {
+    // Constructor injection ✅
+    public DuplicateDetectionServiceImpl(TicketRepository ticketRepo,
+                                         DuplicateRuleRepository ruleRepo,
+                                         DuplicateDetectionLogRepository logRepo) {
         this.ticketRepo = ticketRepo;
         this.ruleRepo = ruleRepo;
         this.logRepo = logRepo;
