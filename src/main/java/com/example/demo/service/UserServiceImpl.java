@@ -12,11 +12,9 @@ import com.example.demo.repository.UserRepository;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepo;
-
     public UserServiceImpl(UserRepository userRepo) {
         this.userRepo = userRepo;
     }
-
     @Override
     public UserModel registerUser(UserModel user) {
 
