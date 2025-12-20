@@ -12,11 +12,29 @@ public class DuplicateRule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String ruleName;   // <-- Add this
-    private String matchType;  // EXACT_MATCH, KEYWORD, SIMILARITY
+    private String ruleName;
+    private String matchType; // EXACT_MATCH, KEYWORD, SIMILARITY
     private double threshold;
 
-    // Getters and Setters
+    // Default constructor
+    public DuplicateRule() {}
+
+    // Constructor used in tests
+    public DuplicateRule(String ruleName, String matchType, double threshold) {
+        this.ruleName = ruleName;
+        this.matchType = matchType;
+        this.threshold = threshold;
+    }
+
+    // Full constructor with ID
+    public DuplicateRule(Long id, String ruleName, String matchType, double threshold) {
+        this.id = id;
+        this.ruleName = ruleName;
+        this.matchType = matchType;
+        this.threshold = threshold;
+    }
+
+    // Getters and setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -28,13 +46,4 @@ public class DuplicateRule {
 
     public double getThreshold() { return threshold; }
     public void setThreshold(double threshold) { this.threshold = threshold; }
-    public DuplicateRule(Long id, String ruleName, String matchType, double threshold) {
-        this.id = id;
-        this.ruleName = ruleName;
-        this.matchType = matchType;
-        this.threshold = threshold;
-    }
-    public DuplicateRule() {
-    }
-    
 }
