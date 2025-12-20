@@ -3,7 +3,6 @@ package com.example.demo.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
-
 import com.example.demo.entity.UserModel;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.UserRepository;
