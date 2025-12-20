@@ -14,7 +14,7 @@ import com.example.demo.repository.DuplicateRuleRepository;
 import com.example.demo.repository.TicketRepository;
 
 @Service
-public class DuplicateDetectionServiceImpl implements DuplicateDetectionService {
+public class DuplicateDetectionLogServiceImpl implements DuplicateDetectionLogService {
 
     private final TicketRepository ticketRepo;
     private final DuplicateRuleRepository ruleRepo;
