@@ -39,4 +39,14 @@ public class DuplicateDetectionLog {
     public Double getMatchScore() { return matchScore; }
     public void setMatchScore(Double matchScore) { this.matchScore = matchScore; }
     public LocalDateTime getDetectedAt() { return detectedAt; }
+
+    public DuplicateDetectionLog(Long id, Ticket ticket, Ticket matchedTicket, Double matchScore,
+            LocalDateTime detectedAt) {
+        this.id = id;
+        this.ticket = ticket;
+        this.matchedTicket = matchedTicket;
+        this.matchScore = matchScore;
+        this.detectedAt = detectedAt;
+    }
+    
 }
