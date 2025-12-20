@@ -21,7 +21,7 @@ public class DuplicateDetectionServiceImpl implements DuplicateDetectionService 
     private final DuplicateRuleRepository ruleRepo;
     private final DuplicateDetectionLogRepository logRepo;
 
-    // Constructor injection ✅
+    // Constructor injection
     public DuplicateDetectionServiceImpl(TicketRepository ticketRepo,
                                          DuplicateRuleRepository ruleRepo,
                                          DuplicateDetectionLogRepository logRepo) {
