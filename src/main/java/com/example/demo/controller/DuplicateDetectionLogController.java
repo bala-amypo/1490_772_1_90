@@ -3,15 +3,15 @@ package com.example.demo.controller;
 import java.util.List;
 import org.springframework.web.bind.annotation.*;
 import com.example.demo.model.DuplicateDetectionLog;
-import com.example.demo.service.DuplicateDetectionService;
+import com.example.demo.service.DuplicateDetectionLogService;
 
 @RestController
 @RequestMapping("/api/detection")
-public class DuplicateDetectionController {
+public class DuplicateDetectionLogController {
 
-    private final DuplicateDetectionService service;
+    private final DuplicateDetectionLogService service;
 
-    public DuplicateDetectionController(DuplicateDetectionService service) { this.service = service; }
+    public DuplicateDetectionLogController(DuplicateDetectionLogService service) { this.service = service; }
 
     @GetMapping("/run/{ticketId}")
     public List<DuplicateDetectionLog> detect(@PathVariable Long ticketId) {
