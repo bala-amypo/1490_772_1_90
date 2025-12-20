@@ -1,16 +1,11 @@
 package com.example.demo.service;
 
 import java.util.List;
-
-import com.example.demo.entity.TicketModel;
+import com.example.demo.model.Ticket;
 
 public interface TicketService {
-
-    TicketModel createTicket(Long userId, Long categoryId, TicketModel ticket);
-
-    TicketModel getTicket(Long ticketId);
-
-    List<TicketModel> getTicketsByUser(Long userId);
-
-    List<TicketModel> getAllTickets();
+    Ticket createTicket(Long userId, Long categoryId, Ticket ticket);
+    Ticket getTicket(Long ticketId);
+    List<Ticket> getTicketsByUser(Long userId);
+    List<Ticket> getAllTickets();
 }
