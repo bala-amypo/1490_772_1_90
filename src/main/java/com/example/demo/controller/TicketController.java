@@ -1,46 +1,36 @@
 package com.example.demo.controller;
 
 import java.util.List;
-
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
-
-import com.example.demo.entity.TicketModel;
+import com.example.demo.model.Ticket;
 import com.example.demo.service.TicketService;
 
 @RestController
 @RequestMapping("/api/tickets")
 public class TicketController {
 
-    private final TicketService ticketService;
+    private final TicketService service;
 
-    public TicketController(TicketService ticketService) {
-        this.ticketService = ticketService;
-    }
+    public TicketController(TicketService service) { this.service = service; }
 
-    // CREATE TICKET
     @PostMapping("/{userId}/{categoryId}")
-    public TicketModel createTicket(
-            @PathVariable Long userId,
-            @PathVariable Long categoryId,
-            @RequestBody TicketModel ticket) {
-        return ticketService.createTicket(userId, categoryId, ticket);
+    public Ticket create(@PathVariable Long userId, @PathVariable Long categoryId, @Valid @RequestBody Ticket ticket) {
+        return service.createTicket(userId, categoryId, ticket);
     }
 
-    // GET TICKETS BY USER
-    @GetMapping("/user/{userId}")
-    public List<TicketModel> getTicketsByUser(@PathVariable Long userId) {
-        return ticketService.getTicketsByUser(userId);
-    }
-
-    // GET ALL TICKETS
-    @GetMapping("/all")
-    public List<TicketModel> getAllTickets() {
-        return ticketService.getAllTickets();
-    }
-
-    // GET TICKET BY ID
     @GetMapping("/{id}")
-    public TicketModel getTicket(@PathVariable Long id) {
-        return ticketService.getTicket(id);
+    public Ticket get(@PathVariable Long id) {
+        return service.getTicket(id);
+    }
+
+    @GetMapping("/user/{userId}")
+    public List<Ticket> getByUser(@PathVariable Long userId) {
+        return service.getTicketsByUser(userId);
+    }
+
+    @GetMapping("/all")
+    public List<Ticket> getAll() {
+        return service.getAllTickets();
     }
 }
