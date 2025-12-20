@@ -5,6 +5,8 @@ import com.example.demo.model.Ticket;
 import java.util.List;
 
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
-    List<Ticket> findByStatus(String status);
-    List<Ticket> findByUser_Id(Long userId);
+
+    List<Ticket> findByCategory_Id(long categoryId);
+
+    List<Ticket> findBySubjectContainingIgnoreCaseOrDescriptionContainingIgnoreCase(String subject, String description);
 }
