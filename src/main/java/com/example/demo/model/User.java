@@ -55,4 +55,15 @@ public class User {
     public void setRole(String role) { this.role = role; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
+
+    public User(Long id, @NotBlank String fullName, @Email @NotBlank String email, @Size(min = 8) String password,
+            String role, LocalDateTime createdAt) {
+        this.id = id;
+        this.fullName = fullName;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.createdAt = createdAt;
+    }
+    
 }
