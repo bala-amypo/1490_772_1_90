@@ -54,4 +54,17 @@ public class Ticket {
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
     public LocalDateTime getCreatedAt() { return createdAt; }
+
+    public Ticket(Long id, User user, TicketCategory category, @NotBlank String subject,
+            @NotBlank @Size(min = 10, message = "description must be at least 10 characters") String description,
+            String status, LocalDateTime createdAt) {
+        this.id = id;
+        this.user = user;
+        this.category = category;
+        this.subject = subject;
+        this.description = description;
+        this.status = status;
+        this.createdAt = createdAt;
+    }
+    
 }
