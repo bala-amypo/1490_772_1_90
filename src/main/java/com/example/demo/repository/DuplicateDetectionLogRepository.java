@@ -1,12 +1,7 @@
-package com.example.demo.repository;
-
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
+import java.util.List;
 import com.example.demo.model.DuplicateDetectionLog;
 
-@Repository
 public interface DuplicateDetectionLogRepository extends JpaRepository<DuplicateDetectionLog, Long> {
-    
-    // Optional: find by ticket IDs or other filters if needed
+    List<DuplicateDetectionLog> findByTicket_Id(Long ticketId);
 }
