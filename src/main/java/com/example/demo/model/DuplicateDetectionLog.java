@@ -31,15 +31,31 @@ public class DuplicateDetectionLog {
     @Column(name = "detection_time")
     private LocalDateTime detectionTime;
     
-    // Constructor fixes
+    // Constructors
     public DuplicateDetectionLog() {}
     
-    public DuplicateDetectionLog(Ticket ticket1, Ticket ticket2, Double similarityScore) {
-        this.ticket1 = ticket1;
-        this.ticket2 = ticket2;
-        this.similarityScore = similarityScore;
-        this.detectionTime = LocalDateTime.now();
+    @PrePersist
+    protected void onCreate() {
+        detectionTime = LocalDateTime.now();
     }
     
-    // ... rest of the class
+    // Getters and Setters (MUST HAVE THESE!)
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    
+    public Ticket getTicket1() { return ticket1; }
+    public void setTicket1(Ticket ticket1) { this.ticket1 = ticket1; }
+    
+    public Ticket getTicket2() { return ticket2; }
+    public void setTicket2(Ticket ticket2) { this.ticket2 = ticket2; }
+    
+    public Double getSimilarityScore() { return similarityScore; }
+    public void setSimilarityScore(Double similarityScore) { 
+        this.similarityScore = similarityScore; 
+    }
+    
+    public LocalDateTime getDetectionTime() { return detectionTime; }
+    public void setDetectionTime(LocalDateTime detectionTime) { 
+        this.detectionTime = detectionTime; 
+    }
 }
