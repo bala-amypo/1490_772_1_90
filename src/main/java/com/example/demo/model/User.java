@@ -1,9 +1,7 @@
 package com.example.demo.model;
 
 import java.time.LocalDateTime;
-
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name = "users")
@@ -13,22 +11,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Column(nullable = false)
     private String fullName;
-
-    @Email
-    @NotBlank
-    @Column(unique = true, nullable = false)
     private String email;
-
-    @Size(min = 8)
-    @Column(nullable = false)
     private String password;
-
-    @Column(nullable = false)
     private String role = "USER";
-
     private LocalDateTime createdAt;
 
     @PrePersist
@@ -38,7 +24,16 @@ public class User {
 
     public User() {}
 
-    // getters & setters
+    public User(Long id, String fullName, String email, String password, String role, LocalDateTime createdAt) {
+        this.id = id;
+        this.fullName = fullName;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.createdAt = createdAt;
+    }
+
+    // Getters & Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -55,15 +50,4 @@ public class User {
     public void setRole(String role) { this.role = role; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
-
-    public User(Long id, @NotBlank String fullName, @Email @NotBlank String email, @Size(min = 8) String password,
-            String role, LocalDateTime createdAt) {
-        this.id = id;
-        this.fullName = fullName;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.createdAt = createdAt;
-    }
-    
 }

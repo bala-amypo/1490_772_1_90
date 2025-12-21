@@ -1,9 +1,6 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class DuplicateRule {
@@ -12,9 +9,18 @@ public class DuplicateRule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String ruleName;   // <-- Add this
+    private String ruleName;   // Rule name
     private String matchType;  // EXACT_MATCH, KEYWORD, SIMILARITY
-    private double threshold;
+    private Double threshold;  // Use Double to allow null
+
+    public DuplicateRule() {}
+
+    public DuplicateRule(Long id, String ruleName, String matchType, Double threshold) {
+        this.id = id;
+        this.ruleName = ruleName;
+        this.matchType = matchType;
+        this.threshold = threshold;
+    }
 
     // Getters and Setters
     public Long getId() { return id; }
@@ -26,15 +32,16 @@ public class DuplicateRule {
     public String getMatchType() { return matchType; }
     public void setMatchType(String matchType) { this.matchType = matchType; }
 
-    public double getThreshold() { return threshold; }
-    public void setThreshold(double threshold) { this.threshold = threshold; }
-    public DuplicateRule(Long id, String ruleName, String matchType, double threshold) {
-        this.id = id;
-        this.ruleName = ruleName;
-        this.matchType = matchType;
-        this.threshold = threshold;
+    public Double getThreshold() { return threshold; }
+    public void setThreshold(Double threshold) { this.threshold = threshold; }
+
+    @Override
+    public String toString() {
+        return "DuplicateRule{" +
+                "id=" + id +
+                ", ruleName='" + ruleName + '\'' +
+                ", matchType='" + matchType + '\'' +
+                ", threshold=" + threshold +
+                '}';
     }
-    public DuplicateRule() {
-    }
-    
 }
