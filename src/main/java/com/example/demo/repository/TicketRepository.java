@@ -6,4 +6,5 @@ import com.example.demo.model.Ticket;
 
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
     List<Ticket> findByUserId(Long userId);
+    List<Ticket> findByStatus(String status); // <-- add this line
 }
