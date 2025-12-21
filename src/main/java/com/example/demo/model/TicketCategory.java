@@ -18,21 +18,19 @@ public class TicketCategory {
     private LocalDateTime createdAt;
 
     // No-args constructor
-    public TicketCategory() {}
+    public TicketCategory() {
 
-    // Constructor
+    }
     public TicketCategory(Long id, String categoryName, String description, LocalDateTime createdAt) {
         this.id = id;
         this.categoryName = categoryName;
         this.description = description;
         this.createdAt = createdAt;
     }
-
-    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public String getCategoryName() { return categoryName; }  // ✅ Missing getter added
+    public String getCategoryName() { return categoryName; } 
     public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
 
     public String getDescription() { return description; }

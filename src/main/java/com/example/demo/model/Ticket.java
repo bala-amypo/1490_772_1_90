@@ -38,9 +38,8 @@ public class Ticket {
     @PrePersist
     void created() { createdAt = LocalDateTime.now(); }
 
-    public Ticket() {}
-
-    // Getters & Setters
+    public Ticket() {
+    }
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public User getUser() { return user; }
@@ -54,7 +53,6 @@ public class Ticket {
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
     public LocalDateTime getCreatedAt() { return createdAt; }
-
     public Ticket(Long id, User user, TicketCategory category, @NotBlank String subject,
             @NotBlank @Size(min = 10, message = "description must be at least 10 characters") String description,
             String status, LocalDateTime createdAt) {
