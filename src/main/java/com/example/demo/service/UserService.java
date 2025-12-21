@@ -8,4 +8,3 @@ public interface UserService {
     User getUser(Long id);
     List<User> getAllUsers();
 }
-
