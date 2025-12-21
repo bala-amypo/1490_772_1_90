@@ -1,33 +1,33 @@
-package com.example.demo.service;
+package com.example.demo.service.impl;
 
-import java.util.List;
-import org.springframework.stereotype.Service;
 import com.example.demo.model.TicketCategory;
 import com.example.demo.repository.TicketCategoryRepository;
+import com.example.demo.service.TicketCategoryService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class TicketCategoryServiceImpl implements TicketCategoryService {
-
-    private final TicketCategoryRepository repo;
-
-    public TicketCategoryServiceImpl(TicketCategoryRepository repo) {
-        this.repo = repo;
+    
+    private final TicketCategoryRepository categoryRepository;
+    
+    public TicketCategoryServiceImpl(TicketCategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
     }
-
+    
     @Override
     public TicketCategory createCategory(TicketCategory category) {
-        if (repo.existsByCategoryName(category.getCategoryName()))
-            return null;
-        return repo.save(category);
+        return categoryRepository.save(category);
     }
-
+    
     @Override
     public List<TicketCategory> getAllCategories() {
-        return repo.findAll();
+        return categoryRepository.findAll();
     }
-
+    
     @Override
     public TicketCategory getCategory(Long id) {
-        return repo.findById(id).orElse(null);
+        return categoryRepository.findById(id).orElse(null);
     }
 }

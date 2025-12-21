@@ -1,39 +1,50 @@
-package com.example.demo.service;
+package com.example.demo.service.impl;
+
+import com.example.demo.model.Ticket;
+import com.example.demo.model.User;
+import com.example.demo.model.TicketCategory;
+import com.example.demo.repository.TicketRepository;
+import com.example.demo.repository.UserRepository;
+import com.example.demo.repository.TicketCategoryRepository;
+import com.example.demo.service.TicketService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-import org.springframework.stereotype.Service;
-import com.example.demo.model.Ticket;
-import com.example.demo.repository.TicketRepository;
 
 @Service
 public class TicketServiceImpl implements TicketService {
-
-    private final TicketRepository ticketRepo;
-
-    public TicketServiceImpl(TicketRepository ticketRepo) {
-        this.ticketRepo = ticketRepo;
+    
+    private final TicketRepository ticketRepository;
+    private final UserRepository userRepository;
+    private final TicketCategoryRepository categoryRepository;
+    
+    public TicketServiceImpl(TicketRepository ticketRepository, 
+                           UserRepository userRepository, 
+                           TicketCategoryRepository categoryRepository) {
+        this.ticketRepository = ticketRepository;
+        this.userRepository = userRepository;
+        this.categoryRepository = categoryRepository;
     }
-
+    
     @Override
-    public Ticket createTicket(Ticket ticket) {
-        // Optional validation
-        if (ticket.getDescription() == null || ticket.getDescription().length() < 10) return null;
-
-        return ticketRepo.save(ticket);
+    public Ticket createTicket(Long userId, Long categoryId, Ticket ticket) {
+        ticket.setUserId(userId);
+        ticket.setCategoryId(categoryId);
+        return ticketRepository.save(ticket);
     }
-
+    
     @Override
     public Ticket getTicket(Long ticketId) {
-        return ticketRepo.findById(ticketId).orElse(null);
+        return ticketRepository.findById(ticketId).orElse(null);
     }
-
+    
     @Override
     public List<Ticket> getTicketsByUser(Long userId) {
-        return ticketRepo.findByUserId(userId); // repository method
+        return ticketRepository.findByUserId(userId);
     }
-
+    
     @Override
     public List<Ticket> getAllTickets() {
-        return ticketRepo.findAll();
+        return ticketRepository.findAll();
     }
 }

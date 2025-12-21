@@ -1,47 +1,77 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "duplicate_rules")
 public class DuplicateRule {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String ruleName;   // Rule name
-    private String matchType;  // EXACT_MATCH, KEYWORD, SIMILARITY
-    private Double threshold;  // Use Double to allow null
-
-    public DuplicateRule() {}
-
-    public DuplicateRule(Long id, String ruleName, String matchType, Double threshold) {
-        this.id = id;
+    
+    private String ruleName;
+    
+    private String matchType;
+    
+    private Double threshold;
+    
+    private LocalDateTime createdAt;
+    
+    // Default Constructor
+    public DuplicateRule() {
+    }
+    
+    // Parameterized Constructor
+    public DuplicateRule(String ruleName, String matchType, Double threshold) {
         this.ruleName = ruleName;
         this.matchType = matchType;
         this.threshold = threshold;
     }
-
+    
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
+    
     // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getRuleName() { return ruleName; }
-    public void setRuleName(String ruleName) { this.ruleName = ruleName; }
-
-    public String getMatchType() { return matchType; }
-    public void setMatchType(String matchType) { this.matchType = matchType; }
-
-    public Double getThreshold() { return threshold; }
-    public void setThreshold(Double threshold) { this.threshold = threshold; }
-
-    @Override
-    public String toString() {
-        return "DuplicateRule{" +
-                "id=" + id +
-                ", ruleName='" + ruleName + '\'' +
-                ", matchType='" + matchType + '\'' +
-                ", threshold=" + threshold +
-                '}';
+    public Long getId() {
+        return id;
+    }
+    
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
+    public String getRuleName() {
+        return ruleName;
+    }
+    
+    public void setRuleName(String ruleName) {
+        this.ruleName = ruleName;
+    }
+    
+    public String getMatchType() {
+        return matchType;
+    }
+    
+    public void setMatchType(String matchType) {
+        this.matchType = matchType;
+    }
+    
+    public Double getThreshold() {
+        return threshold;
+    }
+    
+    public void setThreshold(Double threshold) {
+        this.threshold = threshold;
+    }
+    
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+    
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }
