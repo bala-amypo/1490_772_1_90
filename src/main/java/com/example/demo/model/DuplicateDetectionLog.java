@@ -34,12 +34,31 @@ public class DuplicateDetectionLog {
     // Constructors
     public DuplicateDetectionLog() {}
     
-    @PrePersist
-    protected void onCreate() {
-        detectionTime = LocalDateTime.now();
+    // ADD THIS: 3-parameter constructor for test
+    public DuplicateDetectionLog(Ticket ticket1, Ticket ticket2, double similarityScore) {
+        this.ticket1 = ticket1;
+        this.ticket2 = ticket2;
+        this.similarityScore = similarityScore;
+        this.detectionTime = LocalDateTime.now();
     }
     
-    // Getters and Setters (MUST HAVE THESE!)
+    public DuplicateDetectionLog(Long id, Ticket ticket1, Ticket ticket2, 
+                                 Double similarityScore, LocalDateTime detectionTime) {
+        this.id = id;
+        this.ticket1 = ticket1;
+        this.ticket2 = ticket2;
+        this.similarityScore = similarityScore;
+        this.detectionTime = detectionTime;
+    }
+    
+    @PrePersist
+    protected void onCreate() {
+        if (detectionTime == null) {
+            detectionTime = LocalDateTime.now();
+        }
+    }
+    
+    // Getters and setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     
@@ -54,8 +73,20 @@ public class DuplicateDetectionLog {
         this.similarityScore = similarityScore; 
     }
     
+    // ADD THIS: Alias methods for test
+    public double getMatchScore() { 
+        return similarityScore != null ? similarityScore : 0.0; 
+    }
+    
+    public void setMatchScore(double matchScore) { 
+        this.similarityScore = matchScore; 
+    }
+    
     public LocalDateTime getDetectionTime() { return detectionTime; }
     public void setDetectionTime(LocalDateTime detectionTime) { 
         this.detectionTime = detectionTime; 
     }
+    
+    // ADD THIS: Alias for test
+    public LocalDateTime getDetectedAt() { return detectionTime; }
 }
