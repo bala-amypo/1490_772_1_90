@@ -1,40 +1,40 @@
 package com.example.demo.controller;
 
-import java.util.List;
-import org.springframework.web.bind.annotation.*;
 import com.example.demo.model.Ticket;
 import com.example.demo.service.TicketService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/tickets")
 public class TicketController {
-
-    private final TicketService service;
-
-    public TicketController(TicketService service) {
-        this.service = service;
+    
+    private final TicketService ticketService;
+    
+    public TicketController(TicketService ticketService) {
+        this.ticketService = ticketService;
     }
-
+    
     @PostMapping("/{userId}/{categoryId}")
-    public Ticket create(@PathVariable Long userId, @PathVariable Long categoryId, @RequestBody Ticket ticket) {
-        // Set simplified IDs
-        ticket.setUserId(userId);
-        ticket.setCategoryId(categoryId);
-        return service.createTicket(ticket); // service now only takes Ticket
+    public Ticket createTicket(@PathVariable Long userId, 
+                              @PathVariable Long categoryId,
+                              @RequestBody Ticket ticket) {
+        return ticketService.createTicket(userId, categoryId, ticket);
     }
-
-    @GetMapping("/{id}")
-    public Ticket get(@PathVariable Long id) {
-        return service.getTicket(id);
-    }
-
+    
     @GetMapping("/user/{userId}")
-    public List<Ticket> getByUser(@PathVariable Long userId) {
-        return service.getTicketsByUser(userId);
+    public List<Ticket> getTicketsByUser(@PathVariable Long userId) {
+        return ticketService.getTicketsByUser(userId);
     }
-
+    
     @GetMapping("/all")
-    public List<Ticket> getAll() {
-        return service.getAllTickets();
+    public List<Ticket> getAllTickets() {
+        return ticketService.getAllTickets();
+    }
+    
+    @GetMapping("/{id}")
+    public Ticket getTicket(@PathVariable Long id) {
+        return ticketService.getTicket(id);
     }
 }
