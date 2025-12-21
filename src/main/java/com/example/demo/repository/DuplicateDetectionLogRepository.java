@@ -10,7 +10,9 @@ import java.util.List;
 @Repository
 public interface DuplicateDetectionLogRepository extends JpaRepository<DuplicateDetectionLog, Long> {
     
-    // Use @Query annotation for findByTicket__ld since Spring might not recognize __ld
     @Query("SELECT l FROM DuplicateDetectionLog l WHERE l.ticket1.id = :ticketId OR l.ticket2.id = :ticketId")
     List<DuplicateDetectionLog> findByTicket__ld(@Param("ticketId") Long ticketId);
+    
+    // ADD THIS for test
+    List<DuplicateDetectionLog> findByTicket_Id(Long id);
 }
