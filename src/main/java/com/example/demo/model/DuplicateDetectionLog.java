@@ -26,10 +26,7 @@ public class DuplicateDetectionLog {
 
     @PrePersist
     void created() { detectedAt = LocalDateTime.now(); }
-
     public DuplicateDetectionLog() {}
-
-    // Getters & Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public Ticket getTicket() { return ticket; }
@@ -39,7 +36,6 @@ public class DuplicateDetectionLog {
     public Double getMatchScore() { return matchScore; }
     public void setMatchScore(Double matchScore) { this.matchScore = matchScore; }
     public LocalDateTime getDetectedAt() { return detectedAt; }
-
     public DuplicateDetectionLog(Long id, Ticket ticket, Ticket matchedTicket, Double matchScore,
             LocalDateTime detectedAt) {
         this.id = id;
