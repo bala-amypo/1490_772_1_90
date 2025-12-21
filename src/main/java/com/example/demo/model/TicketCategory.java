@@ -16,11 +16,9 @@ public class TicketCategory {
     
     private LocalDateTime createdAt;
     
-    // Default Constructor
     public TicketCategory() {
     }
     
-    // Parameterized Constructor
     public TicketCategory(String categoryName, String description) {
         this.categoryName = categoryName;
         this.description = description;
@@ -31,7 +29,6 @@ public class TicketCategory {
         createdAt = LocalDateTime.now();
     }
     
-    // Getters and Setters
     public Long getId() {
         return id;
     }

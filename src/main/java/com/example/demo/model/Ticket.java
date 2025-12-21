@@ -22,11 +22,9 @@ public class Ticket {
     
     private LocalDateTime createdAt;
     
-    // Default Constructor
     public Ticket() {
     }
     
-    // Parameterized Constructor
     public Ticket(Long userId, Long categoryId, String subject, String description, String status) {
         this.userId = userId;
         this.categoryId = categoryId;
@@ -40,7 +38,6 @@ public class Ticket {
         createdAt = LocalDateTime.now();
     }
     
-    // Getters and Setters
     public Long getId() {
         return id;
     }
