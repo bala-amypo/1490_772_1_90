@@ -40,9 +40,47 @@ public class DuplicateRule {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
     
-    // Getters and setters (add matchType)
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+    
+    // Constructors
+    public DuplicateRule() {}
+    
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+    
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
+    
+    // Getters and Setters (MUST HAVE THESE!)
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    
+    public String getRuleName() { return ruleName; }
+    public void setRuleName(String ruleName) { this.ruleName = ruleName; }
+    
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    
     public String getMatchType() { return matchType; }
     public void setMatchType(String matchType) { this.matchType = matchType; }
     
-    // ... rest of getters/setters
+    public Double getSimilarityThreshold() { return similarityThreshold; }
+    public void setSimilarityThreshold(Double similarityThreshold) { 
+        this.similarityThreshold = similarityThreshold; 
+    }
+    
+    public Boolean getIsActive() { return isActive; }
+    public void setIsActive(Boolean isActive) { this.isActive = isActive; }
+    
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }
