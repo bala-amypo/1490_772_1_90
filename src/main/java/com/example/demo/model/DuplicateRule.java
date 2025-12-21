@@ -22,6 +22,12 @@ public class DuplicateRule {
     @Column(nullable = false, length = 500)
     private String description;
     
+    @NotBlank(message = "Match type is required")
+    @Pattern(regexp = "EXACT_MATCH|KEYWORD|SIMILARITY", 
+             message = "Match type must be EXACT_MATCH, KEYWORD, or SIMILARITY")
+    @Column(name = "match_type", nullable = false)
+    private String matchType;
+    
     @NotNull(message = "Similarity threshold is required")
     @DecimalMin(value = "0.0", message = "Similarity threshold must be at least 0.0")
     @DecimalMax(value = "1.0", message = "Similarity threshold must be at most 1.0")
@@ -34,50 +40,9 @@ public class DuplicateRule {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
     
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    // Getters and setters (add matchType)
+    public String getMatchType() { return matchType; }
+    public void setMatchType(String matchType) { this.matchType = matchType; }
     
-    // Constructors
-    public DuplicateRule() {}
-    
-    public DuplicateRule(String ruleName, String description, Double similarityThreshold) {
-        this.ruleName = ruleName;
-        this.description = description;
-        this.similarityThreshold = similarityThreshold;
-    }
-    
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
-    }
-    
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
-    
-    // Getters and setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    
-    public String getRuleName() { return ruleName; }
-    public void setRuleName(String ruleName) { this.ruleName = ruleName; }
-    
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-    
-    public Double getSimilarityThreshold() { return similarityThreshold; }
-    public void setSimilarityThreshold(Double similarityThreshold) { 
-        this.similarityThreshold = similarityThreshold; 
-    }
-    
-    public Boolean getIsActive() { return isActive; }
-    public void setIsActive(Boolean isActive) { this.isActive = isActive; }
-    
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
-    
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+    // ... rest of getters/setters
 }
