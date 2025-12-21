@@ -18,11 +18,9 @@ public class DuplicateRule {
     
     private LocalDateTime createdAt;
     
-    // Default Constructor
     public DuplicateRule() {
     }
     
-    // Parameterized Constructor
     public DuplicateRule(String ruleName, String matchType, Double threshold) {
         this.ruleName = ruleName;
         this.matchType = matchType;
@@ -34,7 +32,6 @@ public class DuplicateRule {
         createdAt = LocalDateTime.now();
     }
     
-    // Getters and Setters
     public Long getId() {
         return id;
     }

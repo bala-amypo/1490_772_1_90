@@ -18,11 +18,9 @@ public class DuplicateDetectionLog {
     
     private LocalDateTime detectedAt;
     
-    // Default Constructor
     public DuplicateDetectionLog() {
     }
     
-    // Parameterized Constructor
     public DuplicateDetectionLog(Long ticketId, Long matchedTicketId, Double matchScore) {
         this.ticketId = ticketId;
         this.matchedTicketId = matchedTicketId;
@@ -34,7 +32,6 @@ public class DuplicateDetectionLog {
         detectedAt = LocalDateTime.now();
     }
     
-    // Getters and Setters
     public Long getId() {
         return id;
     }
