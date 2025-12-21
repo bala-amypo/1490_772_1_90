@@ -11,12 +11,17 @@ public class DuplicateRuleServiceImpl implements DuplicateRuleService {
 
     private final DuplicateRuleRepository repo;
 
-    public DuplicateRuleServiceImpl(DuplicateRuleRepository repo) { this.repo = repo; }
+    public DuplicateRuleServiceImpl(DuplicateRuleRepository repo) { 
+        this.repo = repo; 
+    }
 
     @Override
     public DuplicateRule createRule(DuplicateRule rule) {
-        if (repo.findByRuleName(rule.getRuleName()) != null)
-            throw new IllegalArgumentException("rule already exists");
+        // Check if rule with same name exists
+        DuplicateRule existingRule = repo.findByRuleName(rule.getRuleName());
+        if (existingRule != null) {
+            throw new IllegalArgumentException("Duplicate rule with this name already exists");
+        }
         return repo.save(rule);
     }
 
@@ -28,6 +33,6 @@ public class DuplicateRuleServiceImpl implements DuplicateRuleService {
     @Override
     public DuplicateRule getRule(Long id) {
         return repo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("rule not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Duplicate rule not found"));
     }
 }
