@@ -25,5 +25,10 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
     // Find tickets by subject or description containing text (case-insensitive)
     List<Ticket> findBySubjectContainingIgnoreCaseOrDescriptionContainingIgnoreCase(
         String subject, String description);
+    
+    // Optional: If you want to search the same term in both fields
+    default List<Ticket> searchTickets(String searchTerm) {
+        return findBySubjectContainingIgnoreCaseOrDescriptionContainingIgnoreCase(
+            searchTerm, searchTerm);
     }
 }
