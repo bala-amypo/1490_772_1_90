@@ -21,7 +21,6 @@ public class DuplicateDetectionServiceImpl implements DuplicateDetectionService 
     private final DuplicateRuleRepository ruleRepo;
     private final DuplicateDetectionLogRepository logRepo;
 
-    // CORRECT CONSTRUCTOR SIGNATURE as per requirements
     public DuplicateDetectionServiceImpl(TicketRepository ticketRepo,
                                          DuplicateRuleRepository ruleRepo,
                                          DuplicateDetectionLogRepository logRepo) {
@@ -32,41 +31,41 @@ public class DuplicateDetectionServiceImpl implements DuplicateDetectionService 
 
     @Override
     public List<DuplicateDetectionLog> detectDuplicates(Long ticketId) {
-        // 1. Fetch the target ticket - use exact error message
+        // Fetch the target ticket
         Ticket ticket = ticketRepo.findById(ticketId)
                 .orElseThrow(() -> new ResourceNotFoundException("Ticket not found"));
 
-        // 2. Fetch open tickets (excluding the current ticket)
+        // Fetch open tickets (excluding the current ticket)
         List<Ticket> openTickets = ticketRepo.findByStatus("OPEN");
         
-        // 3. Fetch active rules
+        // Fetch active rules
         List<DuplicateRule> activeRules = ruleRepo.findAll().stream()
                 .filter(rule -> rule.getIsActive() != null && rule.getIsActive())
                 .toList();
 
         List<DuplicateDetectionLog> logs = new ArrayList<>();
 
-        // 4. Compare with each open ticket
+        // Compare with each open ticket
         for (Ticket otherTicket : openTickets) {
             // Skip comparing with itself
             if (otherTicket.getId().equals(ticket.getId())) {
                 continue;
             }
 
-            // 5. Apply each active rule
+            // Apply each active rule
             for (DuplicateRule rule : activeRules) {
                 double similarityScore = calculateSimilarityScore(ticket, otherTicket, rule);
 
-                // 6. Check if score meets or exceeds the threshold
+                // Check if score meets or exceeds the threshold
                 if (similarityScore >= rule.getSimilarityThreshold()) {
-                    // 7. Create duplicate detection log
+                    // Create duplicate detection log
                     DuplicateDetectionLog log = new DuplicateDetectionLog();
                     log.setTicket1(ticket);
                     log.setTicket2(otherTicket);
                     log.setSimilarityScore(similarityScore);
                     log.setDetectionTime(LocalDateTime.now());
                     
-                    // 8. Save to database
+                    // Save to database
                     logRepo.save(log);
                     logs.add(log);
                 }
@@ -78,6 +77,10 @@ public class DuplicateDetectionServiceImpl implements DuplicateDetectionService 
 
     private double calculateSimilarityScore(Ticket ticket1, Ticket ticket2, DuplicateRule rule) {
         String matchType = rule.getMatchType();
+        
+        if (matchType == null) {
+            return 0.0;
+        }
         
         switch (matchType.toUpperCase()) {
             case "EXACT_MATCH":
@@ -92,18 +95,6 @@ public class DuplicateDetectionServiceImpl implements DuplicateDetectionService 
                 // Simple keyword matching - check if subjects are exactly the same
                 if (subject1.equals(subject2)) {
                     return 1.0;
-                }
-                
-                // Optional: More advanced keyword matching
-                // For now, return 0.5 if subjects share any words
-                String[] words1 = subject1.split("\\s+");
-                String[] words2 = subject2.split("\\s+");
-                for (String word1 : words1) {
-                    for (String word2 : words2) {
-                        if (word1.equals(word2) && word1.length() > 3) {
-                            return 0.5;
-                        }
-                    }
                 }
                 return 0.0;
                 
@@ -126,7 +117,7 @@ public class DuplicateDetectionServiceImpl implements DuplicateDetectionService 
             throw new ResourceNotFoundException("Ticket not found");
         }
         
-        // Use the repository method with double underscore as specified
+        // Use the repository method
         return logRepo.findByTicket__ld(ticketId);
     }
 
