@@ -17,10 +17,10 @@ public class TicketController {
 
     @PostMapping("/{userId}/{categoryId}")
     public Ticket create(@PathVariable Long userId, @PathVariable Long categoryId, @RequestBody Ticket ticket) {
-        // Set simplified IDs instead of full objects
+        // Set simplified IDs
         ticket.setUserId(userId);
         ticket.setCategoryId(categoryId);
-        return service.createTicket(ticket);
+        return service.createTicket(ticket); // service now only takes Ticket
     }
 
     @GetMapping("/{id}")
