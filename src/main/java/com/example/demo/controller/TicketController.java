@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import java.util.List;
-import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import com.example.demo.model.Ticket;
 import com.example.demo.service.TicketService;
@@ -12,11 +11,16 @@ public class TicketController {
 
     private final TicketService service;
 
-    public TicketController(TicketService service) { this.service = service; }
+    public TicketController(TicketService service) {
+        this.service = service;
+    }
 
     @PostMapping("/{userId}/{categoryId}")
-    public Ticket create(@PathVariable Long userId, @PathVariable Long categoryId, @Valid @RequestBody Ticket ticket) {
-        return service.createTicket(userId, categoryId, ticket);
+    public Ticket create(@PathVariable Long userId, @PathVariable Long categoryId, @RequestBody Ticket ticket) {
+        // Set simplified IDs instead of full objects
+        ticket.setUserId(userId);
+        ticket.setCategoryId(categoryId);
+        return service.createTicket(ticket);
     }
 
     @GetMapping("/{id}")
