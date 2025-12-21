@@ -16,10 +16,9 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public Ticket createTicket(Ticket ticket) {
-        // Optional: validate description length
-        if (ticket.getDescription() == null || ticket.getDescription().length() < 10) {
-            return null;
-        }
+        // Optional validation
+        if (ticket.getDescription() == null || ticket.getDescription().length() < 10) return null;
+
         return ticketRepo.save(ticket);
     }
 
@@ -30,7 +29,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public List<Ticket> getTicketsByUser(Long userId) {
-        return ticketRepo.findByUserId(userId);
+        return ticketRepo.findByUserId(userId); // repository method
     }
 
     @Override
