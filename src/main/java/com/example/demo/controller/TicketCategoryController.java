@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import java.util.List;
-import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import com.example.demo.model.TicketCategory;
 import com.example.demo.service.TicketCategoryService;
@@ -17,7 +16,7 @@ public class TicketCategoryController {
     }
 
     @PostMapping
-    public TicketCategory create(@Valid @RequestBody TicketCategory category) {
+    public TicketCategory create(@RequestBody TicketCategory category) {
         return service.createCategory(category);
     }
 
