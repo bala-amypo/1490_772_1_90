@@ -1,4 +1,4 @@
-package com.example.demo.service.impl;
+package com.example.demo.service;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,6 @@ public class TicketServiceImpl implements TicketService {
     private final UserRepository userRepo;
     private final TicketCategoryRepository catRepo;
 
-    // CORRECT CONSTRUCTOR SIGNATURE
     public TicketServiceImpl(TicketRepository ticketRepo, UserRepository userRepo, TicketCategoryRepository catRepo) {
         this.ticketRepo = ticketRepo;
         this.userRepo = userRepo;
@@ -31,7 +30,6 @@ public class TicketServiceImpl implements TicketService {
         TicketCategory category = catRepo.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("category not found"));
 
-        // Validation: description length
         if (ticket.getDescription().length() < 10)
             throw new IllegalArgumentException("description too short");
 
@@ -50,7 +48,7 @@ public class TicketServiceImpl implements TicketService {
     public List<Ticket> getTicketsByUser(Long userId) {
         if (!userRepo.existsById(userId))
             throw new ResourceNotFoundException("user not found");
-        return ticketRepo.findByUser__ld(userId); // Use double underscore method
+        return ticketRepo.findByUser_Id(userId);
     }
 
     @Override
