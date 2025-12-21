@@ -11,7 +11,9 @@ public class DuplicateDetectionController {
 
     private final DuplicateDetectionService service;
 
-    public DuplicateDetectionController(DuplicateDetectionService service) { this.service = service; }
+    public DuplicateDetectionController(DuplicateDetectionService service) {
+        this.service = service;
+    }
 
     @GetMapping("/run/{ticketId}")
     public List<DuplicateDetectionLog> detect(@PathVariable Long ticketId) {
