@@ -2,16 +2,10 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "duplicate_rules")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class DuplicateRule {
     
     @Id
@@ -49,6 +43,18 @@ public class DuplicateRule {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
     
+    // Constructors
+    public DuplicateRule() {}
+    
+    public DuplicateRule(String ruleName, String description, String matchType, 
+                         Double similarityThreshold, Boolean isActive) {
+        this.ruleName = ruleName;
+        this.description = description;
+        this.matchType = matchType;
+        this.similarityThreshold = similarityThreshold;
+        this.isActive = isActive;
+    }
+    
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
@@ -60,13 +66,30 @@ public class DuplicateRule {
         updatedAt = LocalDateTime.now();
     }
     
-    // Constructor without id for creating new rules
-    public DuplicateRule(String ruleName, String description, String matchType, 
-                         Double similarityThreshold, Boolean isActive) {
-        this.ruleName = ruleName;
-        this.description = description;
-        this.matchType = matchType;
-        this.similarityThreshold = similarityThreshold;
-        this.isActive = isActive;
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    
+    public String getRuleName() { return ruleName; }
+    public void setRuleName(String ruleName) { this.ruleName = ruleName; }
+    
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    
+    public String getMatchType() { return matchType; }
+    public void setMatchType(String matchType) { this.matchType = matchType; }
+    
+    public Double getSimilarityThreshold() { return similarityThreshold; }
+    public void setSimilarityThreshold(Double similarityThreshold) { 
+        this.similarityThreshold = similarityThreshold; 
     }
+    
+    public Boolean getIsActive() { return isActive; }
+    public void setIsActive(Boolean isActive) { this.isActive = isActive; }
+    
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }
