@@ -3,7 +3,7 @@ package com.example.demo.service.impl;
 import com.example.demo.model.Category;
 import com.example.demo.model.Ticket;
 import com.example.demo.model.User;
-import com.example.demo.repository.CategoryRepository;
+import com.example.demo.repository.TicketCategoryRepository;
 import com.example.demo.repository.TicketRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.TicketService;
@@ -16,16 +16,16 @@ public class TicketServiceImpl implements TicketService {
 
     private final TicketRepository ticketRepository;
     private final UserRepository userRepository;
-    private final CategoryRepository categoryRepository;
+    private final TicketCategoryRepository categoryRepository;
 
     public TicketServiceImpl(
             TicketRepository ticketRepository,
             UserRepository userRepository,
-            CategoryRepository categoryRepository) {
+            TicketCategoryRepository categoryRepository) {
 
         this.ticketRepository = ticketRepository;
         this.userRepository = userRepository;
-        this.categoryRepository = categoryRepository;
+        this.tticketcategoryRepository = categoryRepository;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class TicketServiceImpl implements TicketService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        Category category = categoryRepository.findById(categoryId)
+        TicketCategory ticketcategory = ticketcategoryRepository.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category not found"));
 
         ticket.setUser(user);
