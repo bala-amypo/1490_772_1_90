@@ -7,10 +7,13 @@ import java.util.List;
 
 @Repository
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
-    // Use exact method names as specified
     List<Ticket> findByCategory__ld(Long id);
     List<Ticket> findByUser__ld(Long id);
     List<Ticket> findByStatus(String status);
     List<Ticket> findBySubjectContainingIgnoreCaseOrDescriptionContainingIgnoreCase(
         String subject, String description);
+    
+    // ADD THESE for test
+    List<Ticket> findByCategory_Id(Long id);
+    List<Ticket> findByUser_Id(Long id);
 }
