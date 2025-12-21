@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import java.util.*;
 import org.springframework.stereotype.Service;
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.*;
 import com.example.demo.repository.*;
 
@@ -24,8 +23,9 @@ public class DuplicateDetectionServiceImpl implements DuplicateDetectionService 
 
     @Override
     public List<DuplicateDetectionLog> detectDuplicates(Long ticketId) {
-        Ticket ticket = ticketRepo.findById(ticketId)
-                .orElseThrow(() -> new ResourceNotFoundException("ticket not found"));
+        Optional<Ticket> optTicket = ticketRepo.findById(ticketId);
+        if (optTicket.isEmpty()) return Collections.emptyList();
+        Ticket ticket = optTicket.get();
 
         List<Ticket> openTickets = ticketRepo.findByStatus("OPEN");
         List<DuplicateRule> rules = ruleRepo.findAll();
@@ -42,13 +42,10 @@ public class DuplicateDetectionServiceImpl implements DuplicateDetectionService 
                         if (ticket.getDescription().equalsIgnoreCase(other.getDescription()))
                             score = 1.0;
                         break;
-
                     case "KEYWORD":
                         if (ticket.getSubject().equalsIgnoreCase(other.getSubject()))
                             score = 1.0;
                         break;
-
-                    // Removed SIMILARITY case
                 }
 
                 if (score >= rule.getThreshold()) {
@@ -67,14 +64,11 @@ public class DuplicateDetectionServiceImpl implements DuplicateDetectionService 
 
     @Override
     public List<DuplicateDetectionLog> getLogsForTicket(Long ticketId) {
-        if (!ticketRepo.existsById(ticketId))
-            throw new ResourceNotFoundException("ticket not found");
         return logRepo.findByTicket_Id(ticketId);
     }
 
     @Override
     public DuplicateDetectionLog getLog(Long id) {
-        return logRepo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("log not found"));
+        return logRepo.findById(id).orElse(null);
     }
 }

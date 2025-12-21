@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Ticket;
 import com.example.demo.model.User;
 import com.example.demo.model.TicketCategory;
@@ -25,13 +24,11 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public Ticket createTicket(Long userId, Long categoryId, Ticket ticket) {
-        User user = userRepo.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("user not found"));
-        TicketCategory category = catRepo.findById(categoryId)
-                .orElseThrow(() -> new ResourceNotFoundException("category not found"));
+        User user = userRepo.findById(userId).orElse(null);
+        TicketCategory category = catRepo.findById(categoryId).orElse(null);
 
-        if (ticket.getDescription().length() < 10)
-            throw new IllegalArgumentException("description too short");
+        if (user == null || category == null || ticket.getDescription().length() < 10)
+            return null;
 
         ticket.setUser(user);
         ticket.setCategory(category);
@@ -40,14 +37,12 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public Ticket getTicket(Long ticketId) {
-        return ticketRepo.findById(ticketId)
-                .orElseThrow(() -> new ResourceNotFoundException("ticket not found"));
+        return ticketRepo.findById(ticketId).orElse(null);
     }
 
     @Override
     public List<Ticket> getTicketsByUser(Long userId) {
-        if (!userRepo.existsById(userId))
-            throw new ResourceNotFoundException("user not found");
+        if (!userRepo.existsById(userId)) return List.of();
         return ticketRepo.findByUser_Id(userId);
     }
 

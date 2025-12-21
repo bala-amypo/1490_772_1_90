@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.DuplicateRule;
 import com.example.demo.repository.DuplicateRuleRepository;
 
@@ -16,7 +15,7 @@ public class DuplicateRuleServiceImpl implements DuplicateRuleService {
     @Override
     public DuplicateRule createRule(DuplicateRule rule) {
         if (repo.findByRuleName(rule.getRuleName()) != null)
-            throw new IllegalArgumentException("rule already exists");
+            return null;
         return repo.save(rule);
     }
 
@@ -27,7 +26,6 @@ public class DuplicateRuleServiceImpl implements DuplicateRuleService {
 
     @Override
     public DuplicateRule getRule(Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("rule not found"));
+        return repo.findById(id).orElse(null);
     }
 }

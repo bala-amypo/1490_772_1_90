@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.TicketCategory;
 import com.example.demo.repository.TicketCategoryRepository;
 
@@ -18,7 +17,7 @@ public class TicketCategoryServiceImpl implements TicketCategoryService {
     @Override
     public TicketCategory createCategory(TicketCategory category) {
         if (repo.existsByCategoryName(category.getCategoryName()))
-            throw new IllegalArgumentException("category already exists");
+            return null;
         return repo.save(category);
     }
 
@@ -29,7 +28,6 @@ public class TicketCategoryServiceImpl implements TicketCategoryService {
 
     @Override
     public TicketCategory getCategory(Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("category not found"));
+        return repo.findById(id).orElse(null);
     }
 }
