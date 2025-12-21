@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
-import java.util.List;
 import com.example.demo.model.DuplicateRule;
+import java.util.List;
 
 public interface DuplicateRuleService {
     DuplicateRule createRule(DuplicateRule rule);
