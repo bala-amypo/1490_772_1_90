@@ -4,12 +4,10 @@ import com.example.demo.model.TicketCategory;
 import com.example.demo.repository.TicketCategoryRepository;
 import com.example.demo.service.TicketCategoryService;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
 public class TicketCategoryServiceImpl implements TicketCategoryService {
-    
     private final TicketCategoryRepository categoryRepository;
     
     public TicketCategoryServiceImpl(TicketCategoryRepository categoryRepository) {
