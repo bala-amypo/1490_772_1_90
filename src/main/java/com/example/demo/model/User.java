@@ -27,7 +27,7 @@ public class User {
     @Column(nullable = false)
     private String password;
     
-    // Add role field if test needs it
+    // ADD THIS field for test
     @Column
     private String role;
     
@@ -46,7 +46,7 @@ public class User {
         this.password = password;
     }
     
-    // ADD THIS: 4-parameter constructor for test
+    // 4-parameter constructor for test
     public User(String fullName, String email, String password, String role) {
         this.fullName = fullName;
         this.email = email;
@@ -78,7 +78,7 @@ public class User {
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
     
-    // ADD THIS: Role getter/setter
+    // ADD THESE for test
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
     

@@ -55,7 +55,7 @@ public class DuplicateRule {
         this.isActive = isActive;
     }
     
-    // ADD THIS: 3-parameter constructor for test
+    // 3-parameter constructor for test
     public DuplicateRule(String ruleName, String description, double threshold) {
         this.ruleName = ruleName;
         this.description = description;
@@ -93,7 +93,7 @@ public class DuplicateRule {
         this.similarityThreshold = similarityThreshold; 
     }
     
-    // ADD THIS: Alias methods for test (getThreshold/setThreshold)
+    // ADD THESE alias methods for test
     public double getThreshold() { 
         return similarityThreshold != null ? similarityThreshold : 0.0; 
     }

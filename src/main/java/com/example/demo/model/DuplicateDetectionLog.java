@@ -34,7 +34,7 @@ public class DuplicateDetectionLog {
     // Constructors
     public DuplicateDetectionLog() {}
     
-    // ADD THIS: 3-parameter constructor for test
+    // 3-parameter constructor for test
     public DuplicateDetectionLog(Ticket ticket1, Ticket ticket2, double similarityScore) {
         this.ticket1 = ticket1;
         this.ticket2 = ticket2;
@@ -73,7 +73,7 @@ public class DuplicateDetectionLog {
         this.similarityScore = similarityScore; 
     }
     
-    // ADD THIS: Alias methods for test
+    // ADD THESE alias methods for test
     public double getMatchScore() { 
         return similarityScore != null ? similarityScore : 0.0; 
     }
@@ -87,6 +87,6 @@ public class DuplicateDetectionLog {
         this.detectionTime = detectionTime; 
     }
     
-    // ADD THIS: Alias for test
+    // ADD THIS alias for test
     public LocalDateTime getDetectedAt() { return detectionTime; }
 }
