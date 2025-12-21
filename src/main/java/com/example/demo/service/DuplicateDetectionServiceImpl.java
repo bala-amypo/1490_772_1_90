@@ -50,8 +50,8 @@ public class DuplicateDetectionServiceImpl implements DuplicateDetectionService 
 
                 if (score >= rule.getThreshold()) {
                     DuplicateDetectionLog log = new DuplicateDetectionLog();
-                    log.setTicket(ticket);
-                    log.setMatchedTicket(other);
+                    log.setTicketId(ticket.getId());       // <-- fixed
+                    log.setMatchedTicketId(other.getId()); // <-- fixed
                     log.setMatchScore(score);
                     logRepo.save(log);
                     logs.add(log);
@@ -64,7 +64,7 @@ public class DuplicateDetectionServiceImpl implements DuplicateDetectionService 
 
     @Override
     public List<DuplicateDetectionLog> getLogsForTicket(Long ticketId) {
-        return logRepo.findByTicket_Id(ticketId);
+        return logRepo.findByTicketId(ticketId); // ensure repository uses Long ticketId
     }
 
     @Override
