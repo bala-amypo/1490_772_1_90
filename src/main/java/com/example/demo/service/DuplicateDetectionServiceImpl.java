@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.*;
 import com.example.demo.repository.*;
-import com.example.demo.util.TextSimilarityUtil;
 
 @Service
 public class DuplicateDetectionServiceImpl implements DuplicateDetectionService {
@@ -49,11 +48,7 @@ public class DuplicateDetectionServiceImpl implements DuplicateDetectionService 
                             score = 1.0;
                         break;
 
-                    case "SIMILARITY":
-                        score = TextSimilarityUtil.calculateSimilarity(
-                                ticket.getDescription(),
-                                other.getDescription());
-                        break;
+                    // Removed SIMILARITY case
                 }
 
                 if (score >= rule.getThreshold()) {
