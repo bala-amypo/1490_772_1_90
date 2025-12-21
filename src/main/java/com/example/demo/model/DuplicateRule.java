@@ -55,6 +55,15 @@ public class DuplicateRule {
         this.isActive = isActive;
     }
     
+    // ADD THIS: 3-parameter constructor for test
+    public DuplicateRule(String ruleName, String description, double threshold) {
+        this.ruleName = ruleName;
+        this.description = description;
+        this.similarityThreshold = threshold;
+        this.matchType = "SIMILARITY"; // Default
+        this.isActive = true;
+    }
+    
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
@@ -82,6 +91,15 @@ public class DuplicateRule {
     public Double getSimilarityThreshold() { return similarityThreshold; }
     public void setSimilarityThreshold(Double similarityThreshold) { 
         this.similarityThreshold = similarityThreshold; 
+    }
+    
+    // ADD THIS: Alias methods for test (getThreshold/setThreshold)
+    public double getThreshold() { 
+        return similarityThreshold != null ? similarityThreshold : 0.0; 
+    }
+    
+    public void setThreshold(double threshold) { 
+        this.similarityThreshold = threshold; 
     }
     
     public Boolean getIsActive() { return isActive; }
