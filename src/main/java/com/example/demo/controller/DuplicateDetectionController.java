@@ -1,40 +1,30 @@
 package com.example.demo.controller;
 
+import java.util.List;
+import org.springframework.web.bind.annotation.*;
 import com.example.demo.model.DuplicateDetectionLog;
 import com.example.demo.service.DuplicateDetectionService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @RestController
-@RequestMapping("/api/duplicate-detection")
-@Tag(name = "Duplicate Detection", description = "APIs for detecting duplicate tickets")
+@RequestMapping("/api/detection")
 public class DuplicateDetectionController {
 
-    @Autowired
-    private DuplicateDetectionService duplicateDetectionService;
+    private final DuplicateDetectionService service;
 
-    @PostMapping("/detect/{ticketId}")
-    @Operation(summary = "Detect duplicates for a ticket")
-    public ResponseEntity<List<DuplicateDetectionLog>> detectDuplicates(@PathVariable Long ticketId) {
-        List<DuplicateDetectionLog> logs = duplicateDetectionService.detectDuplicates(ticketId);
-        return ResponseEntity.ok(logs);
+    public DuplicateDetectionController(DuplicateDetectionService service) { this.service = service; }
+
+    @GetMapping("/run/{ticketId}")
+    public List<DuplicateDetectionLog> detect(@PathVariable Long ticketId) {
+        return service.detectDuplicates(ticketId);
     }
 
-    @GetMapping("/logs/ticket/{ticketId}")
-    @Operation(summary = "Get duplicate detection logs for a ticket")
-    public ResponseEntity<List<DuplicateDetectionLog>> getLogsForTicket(@PathVariable Long ticketId) {
-        List<DuplicateDetectionLog> logs = duplicateDetectionService.getLogsForTicket(ticketId);
-        return ResponseEntity.ok(logs);
+    @GetMapping("/ticket/{ticketId}")
+    public List<DuplicateDetectionLog> getLogs(@PathVariable Long ticketId) {
+        return service.getLogsForTicket(ticketId);
     }
 
-    @GetMapping("/logs/{id}")
-    @Operation(summary = "Get duplicate detection log by ID")
-    public ResponseEntity<DuplicateDetectionLog> getLog(@PathVariable Long id) {
-        DuplicateDetectionLog log = duplicateDetectionService.getLog(id);
-        return ResponseEntity.ok(log);
+    @GetMapping("/{id}")
+    public DuplicateDetectionLog get(@PathVariable Long id) {
+        return service.getLog(id);
     }
 }
