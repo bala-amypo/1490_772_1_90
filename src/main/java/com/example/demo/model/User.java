@@ -27,11 +27,32 @@ public class User {
     @Column(nullable = false)
     private String password;
     
+    // Add role field if test needs it
+    @Column
+    private String role;
+    
     @Column(name = "created_at")
     private LocalDateTime createdAt;
     
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+    
+    // Constructors
+    public User() {}
+    
+    public User(String fullName, String email, String password) {
+        this.fullName = fullName;
+        this.email = email;
+        this.password = password;
+    }
+    
+    // ADD THIS: 4-parameter constructor for test
+    public User(String fullName, String email, String password, String role) {
+        this.fullName = fullName;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
     
     @PrePersist
     protected void onCreate() {
@@ -44,16 +65,7 @@ public class User {
         updatedAt = LocalDateTime.now();
     }
     
-    // Constructors, Getters, and Setters
-    public User() {}
-    
-    public User(String fullName, String email, String password) {
-        this.fullName = fullName;
-        this.email = email;
-        this.password = password;
-    }
-    
-    // Getters and setters for all fields...
+    // Getters and setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     
@@ -65,6 +77,10 @@ public class User {
     
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
+    
+    // ADD THIS: Role getter/setter
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
     
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
