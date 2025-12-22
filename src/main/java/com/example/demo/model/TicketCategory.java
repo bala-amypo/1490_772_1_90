@@ -17,16 +17,12 @@ public class TicketCategory {
     private String description;
 
     private LocalDateTime createdAt = LocalDateTime.now();
-
     public TicketCategory() {
     }
-
     public TicketCategory(String categoryName, String description) {
         this.categoryName = categoryName;
         this.description = description;
     }
-
-    // Getters and setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
