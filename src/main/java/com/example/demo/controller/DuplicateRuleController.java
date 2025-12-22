@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
-import org.springframework.web.bind.annotation.*;
 import java.util.List;
+
+import org.springframework.web.bind.annotation.*;
+
 import com.example.demo.model.DuplicateRule;
 import com.example.demo.service.DuplicateRuleService;
 
@@ -16,12 +18,17 @@ public class DuplicateRuleController {
     }
 
     @PostMapping
-    public DuplicateRule save(@RequestBody DuplicateRule rule) {
-        return service.save(rule);
+    public DuplicateRule createRule(@RequestBody DuplicateRule rule) {
+        return service.createRule(rule);
+    }
+
+    @GetMapping("/{id}")
+    public DuplicateRule getRule(@PathVariable long id) {
+        return service.getRule(id);
     }
 
     @GetMapping
-    public List<DuplicateRule> getAll() {
+    public List<DuplicateRule> getAllRules() {
         return service.getAll();
     }
 }
