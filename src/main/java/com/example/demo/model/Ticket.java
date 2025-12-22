@@ -6,7 +6,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
 @Entity
 public class Ticket {
 
@@ -14,11 +13,11 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String subject;
+    private String title;
     private String description;
-    private String status;
-    private User user;
-    private TicketCategory category;
+
+    private Long categoryId;   
+    private Long userId;     
 
     private LocalDateTime createdAt = LocalDateTime.now();
     public Ticket() {
