@@ -1,5 +1,7 @@
 package com.example.demo.service.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.example.demo.model.DuplicateRule;
@@ -22,5 +24,10 @@ public class DuplicateRuleServiceImpl implements DuplicateRuleService {
     @Override
     public DuplicateRule getRule(long id) {
         return ruleRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<DuplicateRule> getAll() {
+        return ruleRepository.findAll();
     }
 }
