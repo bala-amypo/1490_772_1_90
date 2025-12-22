@@ -15,11 +15,11 @@ public class Ticket {
     private String status;
 
     @ManyToOne
-    @JoinColumn(name = "user_id") // Creates a foreign key column in the Ticket table
+    @JoinColumn(name = "user_id") 
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "category_id") // Creates a foreign key column in the Ticket table
+    @JoinColumn(name = "category_id") 
     private TicketCategory category;
 
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -35,7 +35,6 @@ public class Ticket {
         this.category = category;
     }
 
-    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getSubject() { return subject; }
