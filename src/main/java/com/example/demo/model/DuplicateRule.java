@@ -19,6 +19,9 @@ public class DuplicateRule {
     public DuplicateRule() {
         this.createdAt = LocalDateTime.now();
     }
+    public String getRuleName() {
+    return this.name;
+}
 
     public DuplicateRule(String name, String matchType, double threshold) {
         this.name = name;
