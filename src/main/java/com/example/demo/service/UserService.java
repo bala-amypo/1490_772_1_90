@@ -4,7 +4,7 @@ import java.util.List;
 import com.example.demo.model.User;
 
 public interface UserService {
-    User save(User user);
-    List<User> getAll();
-    User getById(Long id);
+    User registerUser(User user);
+    User getUser(Long id);
+    List<User> getAllUsers();
 }
