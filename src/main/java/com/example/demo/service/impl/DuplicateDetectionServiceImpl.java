@@ -10,7 +10,7 @@ import com.example.demo.service.DuplicateDetectionService;
 import com.example.demo.util.TextSimilarityUtil;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;p
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,44 +39,38 @@ public class DuplicateDetectionServiceImpl implements DuplicateDetectionService 
 
         List<DuplicateRule> rules = ruleRepository.findAll();
         List<Ticket> openTickets = ticketRepository.findByStatus("OPEN");
-        List<DuplicateDetectionLog> duplicates = new ArrayList<>();
+        List<DuplicateDetectionLog> results = new ArrayList<>();
 
         for (DuplicateRule rule : rules) {
-            for (Ticket otherTicket : openTickets) {
+            for (Ticket other : openTickets) {
 
-                // Skip self-comparison
-                if (Objects.equals(ticket.getId(), otherTicket.getId())) {
+                // skip self
+                if (Objects.equals(ticket.getId(), other.getId())) {
                     continue;
                 }
 
-                double score = calculateMatchScore(ticket, otherTicket, rule);
+                double score = calculateMatchScore(ticket, other, rule);
 
                 if (score >= rule.getThreshold()) {
                     DuplicateDetectionLog log =
-                            new DuplicateDetectionLog(ticket, otherTicket, score);
+                            new DuplicateDetectionLog(ticket, other, score);
                     logRepository.save(log);
-                    duplicates.add(log);
+                    results.add(log);
                 }
             }
         }
 
-        return duplicates;
+        return results;
     }
 
-    /**
-     * 🔴 THIS METHOD HAD THE BUG
-     * Problem: matchType comparison was too strict ("EXACT_MATCH" only)
-     * Fix: normalize matchType and support BOTH "EXACT" and "EXACT_MATCH"
-     */
     private double calculateMatchScore(Ticket t1, Ticket t2, DuplicateRule rule) {
 
-        String subject1 = t1.getSubject() == null ? "" : t1.getSubject().trim();
-        String subject2 = t2.getSubject() == null ? "" : t2.getSubject().trim();
+        String subject1 = normalize(t1.getSubject());
+        String subject2 = normalize(t2.getSubject());
 
-        String desc1 = t1.getDescription() == null ? "" : t1.getDescription().trim();
-        String desc2 = t2.getDescription() == null ? "" : t2.getDescription().trim();
+        String desc1 = normalize(t1.getDescription());
+        String desc2 = normalize(t2.getDescription());
 
-        // ✅ FIX: normalize rule match type
         String matchType = rule.getMatchType() == null
                 ? ""
                 : rule.getMatchType().trim().toUpperCase();
@@ -85,12 +79,11 @@ public class DuplicateDetectionServiceImpl implements DuplicateDetectionService 
 
             case "EXACT":
             case "EXACT_MATCH":
-                // ✅ Case-insensitive exact subject match
-                return subject1.equalsIgnoreCase(subject2) ? 1.0 : 0.0;
+                // strict, case-insensitive subject equality
+                return subject1.equals(subject2) ? 1.0 : 0.0;
 
             case "KEYWORD":
             case "SIMILARITY":
-                // ✅ Keyword & similarity use subject + description
                 String text1 = (subject1 + " " + desc1).trim();
                 String text2 = (subject2 + " " + desc2).trim();
                 return TextSimilarityUtil.similarity(text1, text2);
@@ -100,8 +93,13 @@ public class DuplicateDetectionServiceImpl implements DuplicateDetectionService 
         }
     }
 
+    private String normalize(String s) {
+        return s == null ? "" : s.trim().toLowerCase();
+    }
+
     @Override
     public List<DuplicateDetectionLog> getLogsForTicket(Long ticketId) {
         return logRepository.findByTicket_Id(ticketId);
     }
 }
+
