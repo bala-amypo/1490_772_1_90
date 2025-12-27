@@ -35,17 +35,18 @@ public class DuplicateDetectionServiceImpl implements DuplicateDetectionService 
         List<DuplicateDetectionLog> duplicates = new ArrayList<>();
 
         for (DuplicateRule rule : rules) {
-            for (Ticket other : openTickets) {
+            for (Ticket otherTicket : openTickets) {
 
-                if (Objects.equals(ticket.getId(), other.getId())) {
+                // skip self comparison
+                if (Objects.equals(ticket.getId(), otherTicket.getId())) {
                     continue;
                 }
 
-                double score = calculateMatchScore(ticket, other, rule);
+                double score = calculateMatchScore(ticket, otherTicket, rule);
 
                 if (score >= rule.getThreshold()) {
                     DuplicateDetectionLog log =
-                            new DuplicateDetectionLog(ticket, other, score);
+                            new DuplicateDetectionLog(ticket, otherTicket, score);
                     logRepository.save(log);
                     duplicates.add(log);
                 }
@@ -62,18 +63,15 @@ public class DuplicateDetectionServiceImpl implements DuplicateDetectionService 
         String desc1 = t1.getDescription() == null ? "" : t1.getDescription().trim();
         String desc2 = t2.getDescription() == null ? "" : t2.getDescription().trim();
 
-        // 🔴 THIS WAS THE BUG
-        String matchType = rule.getMatchType() == null
-                ? ""
-                : rule.getMatchType().trim().toUpperCase();
-
-        switch (matchType) {
+        switch (rule.getMatchType()) {
 
             case "EXACT_MATCH":
+                // ✅ Exact Match = SUBJECT ONLY, case-insensitive
                 return subject1.equalsIgnoreCase(subject2) ? 1.0 : 0.0;
 
             case "KEYWORD":
             case "SIMILARITY":
+                // ✅ Keyword & Similarity use subject + description
                 String text1 = (subject1 + " " + desc1).trim();
                 String text2 = (subject2 + " " + desc2).trim();
                 return TextSimilarityUtil.similarity(text1, text2);
