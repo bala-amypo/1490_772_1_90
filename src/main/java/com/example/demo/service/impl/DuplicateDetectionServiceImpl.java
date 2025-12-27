@@ -23,11 +23,13 @@ public class DuplicateDetectionServiceImpl implements DuplicateDetectionService 
     public List<DuplicateDetectionLog> detectDuplicates(Long ticketId) {
         Ticket ticket = ticketRepository.findById(ticketId).orElseThrow(() -> new RuntimeException("Ticket not found"));
         List<DuplicateRule> rules = ruleRepository.findAll();
+        // Fetching OPEN tickets to compare against
         List<Ticket> openTickets = ticketRepository.findByStatus("OPEN");
         List<DuplicateDetectionLog> duplicates = new ArrayList<>();
 
         for (DuplicateRule rule : rules) {
             for (Ticket otherTicket : openTickets) {
+                // Do not compare the ticket with itself
                 if (!Objects.equals(ticket.getId(), otherTicket.getId())) {
                     double score = calculateMatchScore(ticket, otherTicket, rule);
                     if (score >= rule.getThreshold()) {
@@ -42,20 +44,25 @@ public class DuplicateDetectionServiceImpl implements DuplicateDetectionService 
     }
 
     private double calculateMatchScore(Ticket ticket1, Ticket ticket2, DuplicateRule rule) {
-        String text1 = (ticket1.getSubject() != null ? ticket1.getSubject() : "") + " " + 
-                      (ticket1.getDescription() != null ? ticket1.getDescription() : "");
-        String text2 = (ticket2.getSubject() != null ? ticket2.getSubject() : "") + " " + 
-                      (ticket2.getDescription() != null ? ticket2.getDescription() : "");
+        // Construct full text strings for comparison
+        String s1 = ticket1.getSubject() != null ? ticket1.getSubject().trim() : "";
+        String d1 = ticket1.getDescription() != null ? ticket1.getDescription().trim() : "";
+        String s2 = ticket2.getSubject() != null ? ticket2.getSubject().trim() : "";
+        String d2 = ticket2.getDescription() != null ? ticket2.getDescription().trim() : "";
+
+        String text1 = (s1 + " " + d1).trim();
+        String text2 = (s2 + " " + d2).trim();
 
         switch (rule.getMatchType()) {
             case "EXACT_MATCH":
-                // For exact match, only compare subjects case-insensitively
-                String subject1 = ticket1.getSubject() != null ? ticket1.getSubject() : "";
-                String subject2 = ticket2.getSubject() != null ? ticket2.getSubject() : "";
-                return subject1.equalsIgnoreCase(subject2) ? 1.0 : 0.0;
+                // FIX: Compare the combined text (Subject + Description) case-insensitively
+                // This ensures that "Error" and "error" are treated as matches.
+                return text1.equalsIgnoreCase(text2) ? 1.0 : 0.0;
+
             case "KEYWORD":
             case "SIMILARITY":
                 return TextSimilarityUtil.similarity(text1, text2);
+                
             default:
                 return 0.0;
         }
