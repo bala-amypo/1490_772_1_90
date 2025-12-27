@@ -10,7 +10,7 @@ import com.example.demo.service.DuplicateDetectionService;
 import com.example.demo.util.TextSimilarityUtil;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.ArrayList;p
 import java.util.List;
 import java.util.Objects;
 
