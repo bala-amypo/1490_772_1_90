@@ -33,8 +33,6 @@ public class SecurityConfig {
         http
             // Disable CSRF for APIs
             .csrf(csrf -> csrf.disable())
-
-            // 🔥 ENABLE CORS
             .cors(cors -> {})
 
             // Stateless session (JWT)
