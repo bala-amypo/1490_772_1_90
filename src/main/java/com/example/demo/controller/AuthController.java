@@ -1,59 +1,63 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.ApiResponse;
+import com.example.demo.dto.AuthRequest;
+import com.example.demo.dto.AuthResponse;
 import com.example.demo.model.User;
+import com.example.demo.security.JwtUtil;
 import com.example.demo.service.UserService;
-import com.example.demo.config.JwtUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
+@Tag(name = "Authentication", description = "Authentication endpoints")
 public class AuthController {
-
-    private final AuthenticationManager authenticationManager;
+    
     private final UserService userService;
     private final JwtUtil jwtUtil;
-
-    public AuthController(AuthenticationManager authenticationManager, UserService userService, JwtUtil jwtUtil) {
-        this.authenticationManager = authenticationManager;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    
+    public AuthController(UserService userService, JwtUtil jwtUtil, 
+                         PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
         this.userService = userService;
         this.jwtUtil = jwtUtil;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
     }
-
+    
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody User user) {
+    @Operation(summary = "Register a new user")
+    public ResponseEntity<ApiResponse> register(@RequestBody User user) {
         try {
-            User savedUser = userService.registerUser(user); // This should hash the password inside UserService
-            return ResponseEntity.ok(savedUser);
-        } catch (RuntimeException ex) {
-            return ResponseEntity.badRequest().body(ex.getMessage());
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            User savedUser = userService.registerUser(user);
+            return ResponseEntity.ok(new ApiResponse(true, "User registered successfully", savedUser));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new ApiResponse(false, e.getMessage()));
         }
     }
-
+    
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+    @Operation(summary = "Login user")
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest authRequest) {
         try {
-            Authentication auth = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+            authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword())
             );
-            String token = jwtUtil.generateToken(request.getEmail());
-            return ResponseEntity.ok(token);
-        } catch (BadCredentialsException ex) {
-            return ResponseEntity.status(400).body("Bad credentials");
+            
+            User user = userService.findByEmail(authRequest.getEmail());
+            String token = jwtUtil.generateToken(user.getId(), user.getEmail(), user.getRole());
+            
+            return ResponseEntity.ok(new AuthResponse(token, user.getId(), user.getEmail(), user.getRole()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new AuthResponse(null, null, null, null));
         }
-    }
-
-    public static class LoginRequest {
-        private String email;
-        private String password;
-
-        public String getEmail() { return email; }
-        public void setEmail(String email) { this.email = email; }
-        public String getPassword() { return password; }
-        public void setPassword(String password) { this.password = password; }
     }
 }
