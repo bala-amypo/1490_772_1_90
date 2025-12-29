@@ -24,6 +24,8 @@ public User registerUser(User user) {
     if (userRepository.existsByEmail(user.getEmail())) {
         throw new RuntimeException("Email already exists");
     }
+
+    // 🔥 THE MOST IMPORTANT LINE IN YOUR PROJECT
     user.setPassword(passwordEncoder.encode(user.getPassword()));
 
     if (user.getRole() == null) {
