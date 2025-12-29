@@ -24,7 +24,6 @@ public class AuthController {
         this.jwtUtil = jwtUtil;
     }
 
-    // Register a new user
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user) {
         try {
@@ -35,7 +34,6 @@ public class AuthController {
         }
     }
 
-    // Login and get JWT token
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         try {
@@ -49,7 +47,6 @@ public class AuthController {
         }
     }
 
-    // DTO for login
     public static class LoginRequest {
         private String email;
         private String password;
