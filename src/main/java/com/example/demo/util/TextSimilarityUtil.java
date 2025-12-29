@@ -2,22 +2,32 @@ package com.example.demo.util;
 
 import java.util.*;
 
-public final class TextSimilarityUtil {
-    private TextSimilarityUtil() {}
-    public static double similarity(String a, String b) {
-        if (a == null || b == null) return 0.0;
-        String as = a.trim();
-        String bs = b.trim();
-        if (as.isEmpty() || bs.isEmpty()) return 0.0;
-        Set<String> sa = new HashSet<>();
-        for (String s : as.toLowerCase().split("\\s+")) if (!s.isBlank()) sa.add(s);
-        Set<String> sb = new HashSet<>();
-        for (String s : bs.toLowerCase().split("\\s+")) if (!s.isBlank()) sb.add(s);
-        if (sa.isEmpty() || sb.isEmpty()) return 0.0;
-        Set<String> inter = new HashSet<>(sa);
-        inter.retainAll(sb);
-        Set<String> union = new HashSet<>(sa);
-        union.addAll(sb);
-        return union.isEmpty() ? 0.0 : ((double) inter.size()) / union.size();
+public class TextSimilarityUtil {
+    public static double similarity(String text1, String text2) {
+        if (text1 == null || text2 == null || text1.isEmpty() || text2.isEmpty()) {
+            return 0.0;
+        }
+        
+        if (text1.equalsIgnoreCase(text2)) {
+            return 1.0;
+        }
+        
+        String[] words1 = text1.toLowerCase().split("\\s+");
+        String[] words2 = text2.toLowerCase().split("\\s+");
+        
+        Set<String> set1 = new HashSet<>(Arrays.asList(words1));
+        Set<String> set2 = new HashSet<>(Arrays.asList(words2));
+        
+        Set<String> intersection = new HashSet<>(set1);
+        intersection.retainAll(set2);
+        
+        Set<String> union = new HashSet<>(set1);
+        union.addAll(set2);
+        
+        if (union.isEmpty()) {
+            return 0.0;
+        }
+        
+        return (double) intersection.size() / union.size();
     }
 }
