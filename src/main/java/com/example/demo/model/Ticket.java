@@ -36,7 +36,6 @@ public class Ticket {
         this.category = category;
     }
 
-    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     

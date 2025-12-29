@@ -44,7 +44,7 @@ public class DuplicateDetectionServiceImpl implements DuplicateDetectionService 
         for (DuplicateRule rule : rules) {
             for (Ticket otherTicket : openTickets) {
 
-                // Skip self-comparison
+            
                 if (Objects.equals(ticket.getId(), otherTicket.getId())) {
                     continue;
                 }
@@ -63,11 +63,6 @@ public class DuplicateDetectionServiceImpl implements DuplicateDetectionService 
         return duplicates;
     }
 
-    /**
-     * 🔴 THIS METHOD HAD THE BUG
-     * Problem: matchType comparison was too strict ("EXACT_MATCH" only)
-     * Fix: normalize matchType and support BOTH "EXACT" and "EXACT_MATCH"
-     */
     private double calculateMatchScore(Ticket t1, Ticket t2, DuplicateRule rule) {
 
         String subject1 = t1.getSubject() == null ? "" : t1.getSubject().trim();
@@ -76,7 +71,6 @@ public class DuplicateDetectionServiceImpl implements DuplicateDetectionService 
         String desc1 = t1.getDescription() == null ? "" : t1.getDescription().trim();
         String desc2 = t2.getDescription() == null ? "" : t2.getDescription().trim();
 
-        // ✅ FIX: normalize rule match type
         String matchType = rule.getMatchType() == null
                 ? ""
                 : rule.getMatchType().trim().toUpperCase();
@@ -85,12 +79,11 @@ public class DuplicateDetectionServiceImpl implements DuplicateDetectionService 
 
             case "EXACT":
             case "EXACT_MATCH":
-                // ✅ Case-insensitive exact subject match
+        
                 return subject1.equalsIgnoreCase(subject2) ? 1.0 : 0.0;
 
             case "KEYWORD":
             case "SIMILARITY":
-                // ✅ Keyword & similarity use subject + description
                 String text1 = (subject1 + " " + desc1).trim();
                 String text2 = (subject2 + " " + desc2).trim();
                 return TextSimilarityUtil.similarity(text1, text2);

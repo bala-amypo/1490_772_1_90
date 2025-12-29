@@ -28,13 +28,12 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User not found with email: " + email));
 
-        // 🔥 FIX: Prefix role with ROLE_
         GrantedAuthority authority =
                 new SimpleGrantedAuthority("ROLE_" + user.getRole());
 
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
-                user.getPassword(), // encoded password
+                user.getPassword(), 
                 Collections.singletonList(authority)
         );
     }

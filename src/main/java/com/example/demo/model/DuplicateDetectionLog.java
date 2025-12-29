@@ -32,7 +32,6 @@ public class DuplicateDetectionLog {
         this.matchScore = matchScore;
     }
 
-    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     
