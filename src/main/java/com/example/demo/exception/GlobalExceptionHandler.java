@@ -2,28 +2,59 @@ package com.example.demo.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
 
-import java.util.HashMap;
-import java.util.Map;
-
-@RestControllerAdvice
+@ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<?> handleNotFound(NotFoundException ex) {
-        Map<String, Object> body = new HashMap<>();
-        body.put("message", ex.getMessage());
-        body.put("success", false);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
+        ErrorResponse errorResponse = new ErrorResponse(
+            HttpStatus.NOT_FOUND.value(),
+            ex.getMessage(),
+            request.getDescription(false)
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<?> handleValidation(IllegalArgumentException ex) {
-        Map<String, Object> body = new HashMap<>();
-        body.put("message", ex.getMessage());
-        body.put("success", false);
-        return ResponseEntity.badRequest().body(body);
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException ex, WebRequest request) {
+        ErrorResponse errorResponse = new ErrorResponse(
+            HttpStatus.BAD_REQUEST.value(),
+            ex.getMessage(),
+            request.getDescription(false)
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleGlobalException(Exception ex, WebRequest request) {
+        ErrorResponse errorResponse = new ErrorResponse(
+            HttpStatus.INTERNAL_SERVER_ERROR.value(),
+            "Internal server error",
+            request.getDescription(false)
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    public static class ErrorResponse {
+        private int status;
+        private String message;
+        private String path;
+
+        public ErrorResponse(int status, String message, String path) {
+            this.status = status;
+            this.message = message;
+            this.path = path;
+        }
+
+        public int getStatus() { return status; }
+        public void setStatus(int status) { this.status = status; }
+        public String getMessage() { return message; }
+        public void setMessage(String message) { this.message = message; }
+        public String getPath() { return path; }
+        public void setPath(String path) { this.path = path; }
     }
 }
